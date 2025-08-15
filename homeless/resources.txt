@@ -1,0 +1,139 @@
+# Public Databases and Resources for Multnomah County Homeless Populations
+
+## Federal and State Level Resources
+
+### 1. HUD Point-in-Time (PIT) Count Data
+- **Source**: U.S. Department of Housing and Urban Development
+- **Access**: https://www.hudexchange.info/programs/hdx/pit-hic/
+- **Data**: Annual homeless counts, demographic information, and trends
+- **Coverage**: Multnomah County included in Oregon data
+- **API**: Available through HUD Exchange API
+
+### 2. HMIS (Homeless Management Information System)
+- **Source**: Oregon Housing and Community Services
+- **Access**: https://www.oregon.gov/ohcs/homeless/Pages/hmis.aspx
+- **Data**: Service utilization, client demographics, housing outcomes
+- **Coverage**: Statewide including Multnomah County
+
+## Local Multnomah County Resources
+
+### 3. Multnomah County Homeless Services Data
+- **Source**: Multnomah County Joint Office of Homeless Services
+- **Access**: https://multco.us/joint-office-homeless-services/data-dashboard
+- **Data**: Local shelter capacity, street count results, service outcomes
+- **Updates**: Regular updates with current statistics
+
+### 4. Portland Housing Bureau Data
+- **Source**: City of Portland
+- **Access**: https://www.portlandoregon.gov/auditor/30786
+- **Data**: Affordable housing projects, housing assistance programs
+- **Format**: Open data portal with downloadable datasets
+
+## Additional Public Resources
+
+### 5. American Community Survey (ACS)
+- **Source**: U.S. Census Bureau
+- **Access**: https://www.census.gov/programs-surveys/acs
+- **Data**: Housing characteristics, poverty rates, demographic data
+- **Coverage**: Census tract level data for Multnomah County
+
+### 6. Oregon Health Authority Data
+- **Source**: Oregon Health Authority
+- **Access**: https://www.oregon.gov/oha/PH/DISEASESCONDITIONS/Pages/data.aspx
+- **Data**: Health outcomes, substance use, mental health data
+- **Relevance**: Health-related factors affecting homelessness
+
+### 7. Portland State University Homelessness Research & Action Collaborative
+- **Source**: PSU HRAC
+- **Access**: https://www.pdx.edu/homelessness-research-action-collaborative/
+- **Data**: Research reports, policy analysis, local studies
+- **Focus**: Academic research and policy recommendations
+
+## Data Access Methods
+
+### API Access
+- HUD Exchange API for PIT data
+- Oregon Open Data Portal APIs
+- Portland Open Data APIs
+
+### Direct Downloads
+- CSV files from government portals
+- Excel spreadsheets from annual reports
+- PDF reports with tabular data
+
+## Key Metrics Available
+
+- Point-in-time homeless counts
+- Demographics (age, gender, race/ethnicity)
+- Housing status and shelter utilization
+- Service utilization patterns
+- Health outcomes and needs
+- Geographic distribution within the county
+- Trends over time
+- Housing affordability data
+- Service provider capacity and utilization
+
+## Data Quality Notes
+
+- PIT counts are annual snapshots (typically January)
+- HMIS data is more comprehensive but requires proper access permissions
+- Local data may be more current than federal sources
+- Some datasets require data use agreements
+- Historical data availability varies by source
+
+## Public Access for Private Citizens
+
+### ✅ **Fully Accessible to Private Citizens**
+
+**1. HUD Point-in-Time (PIT) Count Data**
+- **Access Level**: Public - No restrictions
+- **Personal Projects**: ✅ Allowed
+- **Data Use**: Annual homeless counts, demographics, trends
+- **Format**: Downloadable CSV/Excel files
+
+**2. American Community Survey (ACS)**
+- **Access Level**: Public - No restrictions
+- **Personal Projects**: ✅ Allowed
+- **Data Use**: Housing characteristics, poverty rates, demographics
+- **Format**: API access and downloadable files
+
+**3. Multnomah County Homeless Services Data**
+- **Access Level**: Public - No restrictions
+- **Personal Projects**: ✅ Allowed
+- **Data Use**: Local shelter capacity, street counts, service outcomes
+- **Format**: Dashboard and downloadable reports
+
+**4. Portland Housing Bureau Data**
+- **Access Level**: Public - No restrictions
+- **Personal Projects**: ✅ Allowed
+- **Data Use**: Affordable housing projects, housing assistance
+- **Format**: Open data portal with API access
+
+**5. Portland State University HRAC Research Reports**
+- **Access Level**: Public - No restrictions
+- **Personal Projects**: ✅ Allowed
+- **Data Use**: Research reports, policy analysis, local studies
+- **Format**: PDF reports and publications
+
+### ⚠️ **Restricted Access - Requires Authorization**
+
+**6. HMIS (Homeless Management Information System)**
+- **Access Level**: Restricted - Requires agency affiliation
+- **Personal Projects**: ❌ Not available to private citizens
+- **Requirements**: Must be affiliated with HUD-funded service provider
+- **Alternative**: Contact Oregon HMIS for research access requests
+
+**7. Oregon Health Authority Data**
+- **Access Level**: Mixed - Some public, some restricted
+- **Personal Projects**: ⚠️ Limited - Depends on specific dataset
+- **Public Data**: Aggregated health statistics
+- **Restricted Data**: Individual-level health records
+- **Process**: Submit data request for restricted datasets
+
+## Recommended Starting Points for Private Citizens
+
+1. **For current statistics**: Multnomah County JOHS Data Dashboard
+2. **For historical trends**: HUD PIT data
+3. **For demographic context**: American Community Survey
+4. **For policy context**: PSU HRAC research reports
+5. **For housing data**: Portland Housing Bureau Open Data

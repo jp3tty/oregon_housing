@@ -1,0 +1,126 @@
+OREGON HOUSING STUDY - PROJECT SYNOPSIS
+=======================================
+
+Project Overview
+----------------
+This study aims to analyze homeless populations, housing costs, average income levels, 
+and housing surplus across all 36 Oregon counties. The project will be showcased on 
+Tableau Public to demonstrate data science capabilities.
+
+Study Scope
+-----------
+- Geographic Coverage: All 36 Oregon counties
+- Time Period: 1990-2023 (historical data collection)
+- Key Metrics: Population, housing costs, income levels, housing surplus measures
+- Data Sources: Multiple federal and state databases
+
+Data Collection Strategy
+------------------------
+Phase 1: Homeless Population Data Collection
+- File: homeless_data_collector.py
+- Decennial Census: 1990, 2000, 2010, 2020
+- ACS Estimates: 2005-2023 (annual)
+- Coverage: All 36 Oregon counties
+- Output: CSV with comprehensive metadata
+- Note: "homeless_" prefix indicates this is total population data used to calculate homeless gaps
+
+Phase 2: Housed Data Collection
+- File: housed_data_collector.py
+- ACS Estimates: 2010-2023 (annual)
+- Coverage: All 36 Oregon counties
+- Data includes: housed units, tenure, vacancy, rent, home values
+- Output: Comprehensive housed metrics CSV
+- Note: "housed_" prefix indicates this is housing data used to calculate homeless gaps
+
+Data Structure
+--------------
+Homeless Population Data Columns:
+- year: Data collection year
+- county_fips: County FIPS code
+- county_name: County name
+- homeless_total_population: Total population count (used to calculate homeless gaps)
+- data_source: "Decennial Census" or "ACS Estimate"
+- margin_of_error: Available for ACS, NaN for decennial
+- last_updated: Timestamp of data collection
+
+Housed Data Columns:
+- year: Data collection year
+- county_fips: County FIPS code
+- county_name: County name
+- housed_total_housing_units: Total housing units available
+- housed_total_occupied_units: Total occupied housing units
+- housed_owner_occupied_units: Owner-occupied housing units
+- housed_renter_occupied_units: Renter-occupied housing units
+- housed_population: Total housed population (owner + renter)
+- housed_total_vacant_units: Total vacant housing units
+- housed_vacant_for_rent: Vacant units available for rent
+- housed_vacant_for_sale: Vacant units available for sale
+- housed_vacant_seasonal: Seasonal/vacation units
+- housed_vacant_migrant: Migrant worker units
+- housed_vacant_other: Other vacant units
+- housed_median_gross_rent: Median monthly rent
+- housed_median_home_value: Median home value
+- housed_vacancy_rate_percent: Vacancy rate percentage
+- housed_homeownership_rate_percent: Homeownership rate percentage
+- housed_rental_rate_percent: Rental rate percentage
+- data_source: "ACS Estimate"
+- last_updated: Timestamp of data collection
+
+Data Quality Approach
+---------------------
+- No filtering of potentially unreliable data
+- Keep all data including quality issues for analysis
+- Comprehensive logging of data collection process
+- Handle missing data as NaN values
+- Retry logic for API failures (3 attempts)
+
+Technical Implementation
+-----------------------
+- Python-based data collection
+- Census API integration
+- Comprehensive error handling and logging
+- CSV output format for Tableau compatibility
+- Timestamped log files for debugging
+- Organized directory structure:
+  - Data_Collection_Output/ (main output directory)
+    - historic_data/ (timestamped files and logs)
+      - collection_logs/ (detailed execution logs)
+      - *_timestamp.csv (versioned data files)
+    - *.csv (current data files, overwritten each run)
+
+Future Phases (Planned)
+-----------------------
+Phase 3: Income Level Data
+- Median household income
+- Poverty rates
+- Income distribution
+
+Phase 4: Homeless Gap Analysis
+- Calculate homeless gaps: homeless_total_population - housed_population
+- Analyze housing surplus vs. population needs
+- County-level homeless gap trends
+
+Data Sources Identified
+-----------------------
+1. HUD Point-in-Time (PIT) Count Data (2007-present)
+2. American Community Survey (ACS) - 2005-present
+3. Decennial Census - 1990, 2000, 2010, 2020
+4. Multnomah County Homeless Services Data
+5. Portland Housing Bureau Open Data
+6. Oregon Housing and Community Services
+
+Collection Date: August 11, 2024
+Status: Phase 1 & 2 Implementation Complete
+Next Steps: Execute both data collectors, then proceed to Phase 3
+
+Notes
+-----
+- All data sources are publicly accessible
+- No API keys required for initial data collection
+- Comprehensive logging implemented for debugging and transparency
+- Data structure designed for easy Tableau integration
+- Focus on historical trends and comprehensive county coverage
+- "homeless_" prefix in population data indicates this is used to calculate homeless gaps
+- "housed_" prefix in housing data indicates this is used to calculate homeless gaps
+- Clear file naming: homeless_data_collector.py and housed_data_collector.py
+- Perfect for homeless gap analysis: homeless_total_population - housed_population

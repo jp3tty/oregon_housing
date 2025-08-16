@@ -6,7 +6,7 @@ A comprehensive data analysis system for understanding housing gaps, homelessnes
 
 This project implements a professional-grade data architecture for housing analysis, including:
 
-- **Population data collection** from Census decennial and ACS estimates (1990-2023)
+- **Population data collection** from Census decennial and ACS estimates (2009-2023)
 - **Housing supply analysis** including units, construction, permits, and vacancy rates
 - **Housing demand assessment** covering households, income, and affordability metrics
 - **Homeless data integration** with shelter capacity and utilization tracking
@@ -14,7 +14,7 @@ This project implements a professional-grade data architecture for housing analy
 
 ## 📊 Key Features
 
-- **Comprehensive Coverage**: All 36 Oregon counties with historical data (1990-2023)
+- **Comprehensive Coverage**: All 36 Oregon counties with historical data (2009-2023)
 - **Data Quality Framework**: Professional assessment of completeness, accuracy, timeliness, and consistency
 - **Multiple Data Sources**: Census, HUD PIT, building permits, income data, and local surveys
 - **Production-Ready Architecture**: Async support, error handling, logging, and monitoring
@@ -44,6 +44,11 @@ pip install -r requirements.txt
 3. Run the data architecture demo:
 ```bash
 python homeless/data_architecture.py
+```
+
+4. Run the population data collection:
+```bash
+python homeless/population_collector.py
 ```
 
 ## 📁 Project Structure

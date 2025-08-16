@@ -1,18 +1,12 @@
 #!/usr/bin/env python3
 """
-Oregon County Population Data Collector - Professional Edition
+Oregon County Population Data Collector
 ============================================================
 
-This script implements a professional-grade population data collection system
+This script implements a population data collection system
 with proper naming conventions, data quality assessment, and production-ready
 error handling.
 
-Key Improvements:
-1. Clear naming: total_population (not "homeless_total_population")
-2. Comprehensive data quality assessment
-3. Production-ready error handling and monitoring
-4. Proper data lineage tracking
-5. Enhanced logging and audit trails
 """
 
 import requests
@@ -26,7 +20,7 @@ import json
 import asyncio
 import aiohttp
 from dataclasses import dataclass
-from professional_data_architecture import (
+from data_architecture import (
     OregonHousingDataModel, 
     DataQualityFramework, 
     DataSource, 
@@ -47,7 +41,7 @@ class CollectionMetrics:
 
 class OregonPopulationDataCollector:
     """
-    Professional population data collector for Oregon counties
+    Population data collector for Oregon counties
     
     This class implements production-ready data collection with:
     - Clear, accurate naming conventions
@@ -58,7 +52,7 @@ class OregonPopulationDataCollector:
     """
     
     def __init__(self):
-        """Initialize the professional population data collector"""
+        """Initialize the population data collector"""
         # Data architecture components
         self.data_model = OregonHousingDataModel()
         self.quality_framework = DataQualityFramework()
@@ -94,20 +88,23 @@ class OregonPopulationDataCollector:
     def setup_logging(self):
         """Configure comprehensive logging for production use"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        log_file = os.path.join(self.log_dir, f"professional_population_collection_{timestamp}.log")
+        log_file = os.path.join(self.log_dir, f"population_collection_{timestamp}.log")
         
         # Configure logging with different levels for file vs console
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.DEBUG)
+        
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
+        
         logging.basicConfig(
-            level=logging.INFO,
+            level=logging.DEBUG,  # Set root level to lowest to capture all
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file, level=logging.DEBUG),
-                logging.StreamHandler(level=logging.INFO)
-            ]
+            handlers=[file_handler, console_handler]
         )
         
         self.logger = logging.getLogger(__name__)
-        self.logger.info(f"Starting Professional Oregon Population Data Collection - {timestamp}")
+        self.logger.info(f"Starting Oregon Population Data Collection - {timestamp}")
         
         # Log system configuration
         self.logger.info(f"Target counties: {len(self.counties)}")
@@ -242,13 +239,14 @@ class OregonPopulationDataCollector:
         """
         self.logger.info(f"Collecting Decennial Census data for {year}")
         
-        # Different years use different API structures and variable names
+        # Modern Census API structure (2020 and later)
         if year == 2020:
             variables = "P1_001N"  # Total population variable for 2020
-            dataset = "pl"         # New dataset name
+            dataset = "pl"         # Population dataset
+        # For older years, we'll use ACS data instead since decennial API has changed
         elif year in [1990, 2000, 2010]:
-            variables = "P0010001"  # Total population variable for 1990-2010
-            dataset = "sf1"        # Dataset name for 1990-2010
+            self.logger.info(f"Using ACS data for {year} (decennial API not available)")
+            return self.get_acs_data(year)
         else:
             self.logger.error(f"Unsupported decennial year: {year}")
             return []
@@ -286,23 +284,56 @@ class OregonPopulationDataCollector:
         processed_data = []
         collection_date = datetime.now()
         
-        for row in data[1:]:  # Skip header row
+        # Debug: Log the structure of the data
+        self.logger.debug(f"Data structure for {year}: {len(data)} rows")
+        if data:
+            self.logger.debug(f"Header row: {data[0]}")
+            if len(data) > 1:
+                self.logger.debug(f"Sample data row: {data[1]}")
+        
+        for i, row in enumerate(data[1:], 1):  # Skip header row, enumerate for debugging
             try:
+                self.logger.debug(f"Processing row {i}: {row}")
+                
                 # Extract population count (clear naming)
                 total_population = int(row[0]) if row[0] else None
-                county_fips = row[2]
-                county_name = self.counties.get(county_fips, f"Unknown County {county_fips}")
+                self.logger.debug(f"Row {i} - Population: {total_population}")
+                
+                # Find county FIPS and name - the structure varies by year
+                if year == 2020:
+                    # 2020 Census API returns: [population, state_fips, county_fips]
+                    # row[0] = population, row[1] = state_fips, row[2] = county_fips
+                    county_fips = row[2]  # County FIPS code
+                    county_name = self.counties.get(county_fips, f"County {county_fips}")
+                    self.logger.debug(f"Row {i} - County FIPS: {county_fips}, Name: {county_name}")
+                else:
+                    # Fallback for other years
+                    county_fips = row[2] if len(row) > 2 else None
+                    county_name = self.counties.get(county_fips, f"Unknown County {county_fips}")
+                    self.logger.debug(f"Row {i} - County FIPS: {county_fips}, Name: {county_name}")
+                
+                if not county_fips:
+                    self.logger.warning(f"Skipping row {i} with no county FIPS: {row}")
+                    continue
                 
                 # Assess data quality for this record
+                self.logger.debug(f"Row {i} - Assessing data quality...")
+                # Create a complete record for quality assessment
+                quality_df = pd.DataFrame([{
+                    'total_population': total_population,
+                    'county_fips': county_fips,
+                    'year': year
+                }])
                 quality_metrics = self.quality_framework.assess_dataset_quality(
-                    pd.DataFrame([{'total_population': total_population}]),
+                    quality_df,
                     DataSource.CENSUS_DECENNIAL.value,
                     collection_date,
                     year
                 )
+                self.logger.debug(f"Row {i} - Quality score: {quality_metrics.overall_score.value}")
                 
                 # Create structured record with proper naming
-                processed_data.append({
+                record = {
                     "year": year,                                    # Census year
                     "county_fips": county_fips,                      # 3-digit county code
                     "county_name": county_name,                      # Human-readable name
@@ -312,11 +343,27 @@ class OregonPopulationDataCollector:
                     "data_quality_score": quality_metrics.overall_score.value, # Quality assessment
                     "collection_date": collection_date.strftime("%Y-%m-%d %H:%M:%S"), # When collected
                     "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S") # Last update
-                })
+                }
+                
+                self.logger.debug(f"Row {i} - Created record: {record}")
+                processed_data.append(record)
+                self.logger.debug(f"Row {i} - Record added to processed_data")
                 
             except (ValueError, IndexError) as e:
-                self.logger.warning(f"Error processing {year} data row {row}: {str(e)}")
+                self.logger.warning(f"Error processing row {i} for {year}: {str(e)}")
+                self.logger.warning(f"Row data: {row}")
+            except Exception as e:
+                self.logger.error(f"Unexpected error processing row {i} for {year}: {str(e)}")
+                self.logger.error(f"Row data: {row}")
+                self.logger.error(f"Error type: {type(e)}")
+                import traceback
+                self.logger.error(f"Traceback: {traceback.format_exc()}")
                 
+        self.logger.info(f"Processed {len(processed_data)} decennial records for {year}")
+        if processed_data:
+            self.logger.debug(f"Sample decennial record: {processed_data[0]}")
+            self.logger.debug(f"Record keys: {list(processed_data[0].keys())}")
+        
         return processed_data
     
     def get_acs_data(self, year: int) -> List[Dict]:
@@ -324,7 +371,7 @@ class OregonPopulationDataCollector:
         Collect population data from ACS for a specific year
         
         Args:
-            year: ACS year (2010-2023)
+            year: ACS year (2005-2023, with some limitations for older years)
             
         Returns:
             List of dictionaries containing population data for each county
@@ -375,8 +422,14 @@ class OregonPopulationDataCollector:
                 county_name = self.counties.get(county_fips, f"Unknown County {county_fips}")
                 
                 # Assess data quality for this record
+                # Create a complete record for quality assessment
+                quality_df = pd.DataFrame([{
+                    'total_population': total_population,
+                    'county_fips': county_fips,
+                    'year': year
+                }])
                 quality_metrics = self.quality_framework.assess_dataset_quality(
-                    pd.DataFrame([{'total_population': total_population}]),
+                    quality_df,
                     DataSource.CENSUS_ACS.value,
                     collection_date,
                     year
@@ -398,6 +451,11 @@ class OregonPopulationDataCollector:
             except (ValueError, IndexError) as e:
                 self.logger.warning(f"Error processing {year} ACS data row {row}: {str(e)}")
                 
+        self.logger.info(f"Processed {len(processed_data)} ACS records for {year}")
+        if processed_data:
+            self.logger.debug(f"Sample ACS record: {processed_data[0]}")
+            self.logger.debug(f"Record keys: {list(processed_data[0].keys())}")
+        
         return processed_data
     
     async def collect_all_data_async(self) -> pd.DataFrame:
@@ -409,31 +467,56 @@ class OregonPopulationDataCollector:
         """
         all_data = []
         
-        # Collect decennial census data (synchronous for now)
-        decennial_years = [1990, 2000, 2010, 2020]
+        # Collect decennial census data (2020 only)
+        decennial_years = [2020]
         for year in decennial_years:
             self.logger.info(f"Processing decennial year: {year}")
             year_data = self.get_decennial_data(year)
+            self.logger.debug(f"Decennial {year} data: {len(year_data)} records")
+            if year_data:
+                self.logger.debug(f"Sample decennial record: {year_data[0]}")
             all_data.extend(year_data)
             await asyncio.sleep(1)  # Rate limiting
         
-        # Collect ACS data
-        acs_years = list(range(2010, 2024))  # 2010-2023
+        # Collect ACS data for available years (2009-2023, excluding 2020 which uses decennial)
+        acs_years = list(range(2009, 2024))  # 2009-2023
+        acs_years.remove(2020)  # Remove 2020 since we use decennial data for that year
         for year in acs_years:
             self.logger.info(f"Processing ACS year: {year}")
             year_data = self.get_acs_data(year)
+            self.logger.debug(f"ACS {year} data: {len(year_data)} records")
+            if year_data:
+                self.logger.debug(f"Sample ACS record: {year_data[0]}")
             all_data.extend(year_data)
             await asyncio.sleep(1)  # Rate limiting
         
+        # Debug: Log the collected data before DataFrame creation
+        self.logger.info(f"Total records collected: {len(all_data)}")
+        if all_data:
+            self.logger.debug(f"Sample record structure: {all_data[0]}")
+            self.logger.debug(f"All keys in sample record: {list(all_data[0].keys())}")
+        
         # Convert to DataFrame and organize
         df = pd.DataFrame(all_data)
+        self.logger.info(f"DataFrame created with shape: {df.shape}")
+        self.logger.debug(f"DataFrame columns: {list(df.columns)}")
         
         if not df.empty:
+            # Debug: Check for missing columns before sorting
+            required_columns = ['county_fips', 'year']
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            if missing_columns:
+                self.logger.error(f"Missing required columns: {missing_columns}")
+                self.logger.error(f"Available columns: {list(df.columns)}")
+                return df  # Return empty DataFrame instead of crashing
+            
             # Sort by county and year
             df = df.sort_values(['county_fips', 'year']).reset_index(drop=True)
             
             # Validate data quality
             self._validate_collected_data(df)
+        else:
+            self.logger.warning("No data collected - DataFrame is empty")
         
         return df
     
@@ -456,11 +539,14 @@ class OregonPopulationDataCollector:
             self.logger.warning(f"Missing data for {missing_counties} counties")
         
         # Check for missing years
-        expected_years = len(set([1990, 2000, 2010, 2020] + list(range(2010, 2024))))
+        # Expected: 2009-2023 (15 years) + 2020 decennial = 15 unique years
+        expected_years = 15
         actual_years = df['year'].nunique()
         if actual_years < expected_years:
             missing_years = expected_years - actual_years
             self.logger.warning(f"Missing data for {missing_years} years")
+        elif actual_years > expected_years:
+            self.logger.info(f"Collected data for {actual_years} years (expected {expected_years})")
         
         # Check for data quality issues
         quality_issues = df[df['data_quality_score'] == 'poor']
@@ -480,14 +566,14 @@ class OregonPopulationDataCollector:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         # Save timestamped version (preserved for history)
-        filename = f"oregon_county_population_1990_2023_census_acs_{timestamp}.csv"
+        filename = f"oregon_county_population_2009_2023_census_acs_{timestamp}.csv"
         filepath = os.path.join(self.historic_dir, filename)
         
         df.to_csv(filepath, index=False)
         self.logger.info(f"Timestamped data saved to: {filepath}")
         
         # Save standard version (overwritten each time for easy access)
-        standard_filename = "oregon_county_population_1990_2023_census_acs.csv"
+        standard_filename = "oregon_county_population_2009_2023_census_acs.csv"
         standard_filepath = os.path.join(self.output_dir, standard_filename)
         
         df.to_csv(standard_filepath, index=False)
@@ -537,10 +623,10 @@ class OregonPopulationDataCollector:
         try:
             self.collection_start_time = time.time()
             
-            self.logger.info("Starting Professional Oregon County Population Data Collection")
+            self.logger.info("Starting Oregon County Population Data Collection")
             self.logger.info(f"Target counties: {len(self.counties)}")
-            self.logger.info("Collection period: 1990-2023")
-            self.logger.info("Data sources: Decennial Census + ACS Estimates")
+            self.logger.info("Collection period: 2009-2023 (2020 uses decennial census)")
+            self.logger.info("Data sources: Decennial Census (2020) + ACS Estimates (2009-2023)")
             
             # Collect data
             df = await self.collect_all_data_async()
@@ -581,16 +667,20 @@ class OregonPopulationDataCollector:
             filepath = self.save_data(df)
             self.save_collection_metrics(metrics)
             
-            self.logger.info("Professional population data collection completed successfully!")
+            self.logger.info("Population data collection completed successfully!")
             return filepath, metrics
             
         except Exception as e:
-            self.logger.error(f"Professional population data collection failed: {str(e)}")
+            self.logger.error(f"Population data collection failed: {str(e)}")
             raise
 
 async def main():
     """Main execution function"""
-    print("🏗️ Professional Oregon Population Data Collection")
+    print("🏗️ Oregon Population Data Collection")
+    print("=" * 55)
+    print("📅 Collection Period: 2009-2023")
+    print("🗺️  Coverage: All 36 Oregon Counties")
+    print("📊 Data Sources: Decennial Census (2020) + ACS Estimates (2009-2023)")
     print("=" * 55)
     
     collector = OregonPopulationDataCollector()
@@ -598,7 +688,7 @@ async def main():
     try:
         filepath, metrics = await collector.run_collection()
         
-        print(f"\n✅ Professional population data collection completed successfully!")
+        print(f"\n✅ Population data collection completed successfully!")
         print(f"📁 Output file: {filepath}")
         print(f"📊 Collection metrics:")
         print(f"   - Total records: {metrics.total_records:,}")
@@ -611,7 +701,7 @@ async def main():
         print(f"📈 Check the metrics in: {collector.metrics_dir}")
         
     except Exception as e:
-        print(f"❌ Professional population data collection failed: {str(e)}")
+        print(f"❌ Population data collection failed: {str(e)}")
         print(f"📋 Check the logs in: {collector.log_dir}")
 
 if __name__ == "__main__":

@@ -6,12 +6,6 @@ Oregon Housing Analysis - Data Architecture
 This module implements a production-ready data architecture for housing analysis
 including proper data models, naming conventions, and collection strategies.
 
-Key Improvements:
-1. Clear, accurate naming conventions
-2. Comprehensive data model with proper relationships
-3. Enhanced data sources and collection strategies
-4. Data quality framework and validation
-5. Production-ready error handling and monitoring
 """
 
 import pandas as pd
@@ -34,19 +28,19 @@ class DataSource(Enum):
 
 class DataQualityLevel(Enum):
     """Data quality assessment levels"""
-    EXCELLENT = "excellent"      # 95%+ confidence, multiple sources
-    GOOD = "good"               # 90%+ confidence, reliable source
-    FAIR = "fair"               # 80%+ confidence, some limitations
-    POOR = "poor"               # <80% confidence, significant issues
-    UNKNOWN = "unknown"         # Quality cannot be determined
+    EXCELLENT = "excellent"         # 95%+ confidence, multiple sources
+    GOOD = "good"                   # 90%+ confidence, reliable source
+    FAIR = "fair"                   # 80%+ confidence, some limitations
+    POOR = "poor"                   # <80% confidence, significant issues
+    UNKNOWN = "unknown"             # Quality cannot be determined
 
 @dataclass
 class DataQualityMetrics:
     """Data quality assessment metrics"""
-    completeness: float          # Percentage of expected data present
-    accuracy: float             # Estimated accuracy based on source
-    timeliness: float           # How current the data is
-    consistency: float          # Internal consistency checks
+    completeness: float             # Percentage of expected data present
+    accuracy: float                 # Estimated accuracy based on source
+    timeliness: float               # How current the data is
+    consistency: float              # Internal consistency checks
     overall_score: DataQualityLevel
     
     def to_dict(self) -> Dict[str, Any]:
@@ -60,7 +54,7 @@ class DataQualityMetrics:
 
 class OregonHousingDataModel:
     """
-    Professional data model for Oregon housing analysis
+    Data model for Oregon housing analysis
     
     This class defines the proper structure and relationships for:
     - Population data (total population counts)
@@ -126,7 +120,7 @@ class OregonHousingDataModel:
             "table_name": "population_facts",
             "description": "Total population counts by county and year",
             "columns": {
-                "year": {"type": "int", "constraints": ["not_null", "range:1990-2023"]},
+                "year": {"type": "int", "constraints": ["not_null", "range:2009-2023"]},
                 "county_fips": {"type": "str", "constraints": ["not_null", "length:3"]},
                 "county_name": {"type": "str", "constraints": ["not_null"]},
                 "total_population": {"type": "int", "constraints": ["not_null", "positive"]},
@@ -151,7 +145,7 @@ class OregonHousingDataModel:
             "table_name": "housing_supply_facts",
             "description": "Housing supply metrics including units, construction, and permits",
             "columns": {
-                "year": {"type": "int", "constraints": ["not_null", "range:2010-2023"]},
+                "year": {"type": "int", "constraints": ["not_null", "range:2009-2023"]},
                 "county_fips": {"type": "str", "constraints": ["not_null", "length:3"]},
                 "county_name": {"type": "str", "constraints": ["not_null"]},
                 "total_housing_units": {"type": "int", "constraints": ["not_null", "positive"]},
@@ -183,7 +177,7 @@ class OregonHousingDataModel:
             "table_name": "housing_demand_facts",
             "description": "Housing demand metrics including households, income, and affordability",
             "columns": {
-                "year": {"type": "int", "constraints": ["not_null", "range:2010-2023"]},
+                "year": {"type": "int", "constraints": ["not_null", "range:2009-2023"]},
                 "county_fips": {"type": "str", "constraints": ["not_null", "length:3"]},
                 "county_name": {"type": "str", "constraints": ["not_null"]},
                 "total_households": {"type": "int", "constraints": ["not_null", "positive"]},
@@ -214,7 +208,7 @@ class OregonHousingDataModel:
             "table_name": "homeless_facts",
             "description": "Actual homeless counts and shelter capacity by county and year",
             "columns": {
-                "year": {"type": "int", "constraints": ["not_null", "range:2010-2023"]},
+                "year": {"type": "int", "constraints": ["not_null", "range:2009-2023"]},
                 "county_fips": {"type": "str", "constraints": ["not_null", "length:3"]},
                 "county_name": {"type": "str", "constraints": ["not_null"]},
                 "total_homeless_count": {"type": "int", "constraints": ["nullable", "non_negative"]},
@@ -245,7 +239,7 @@ class OregonHousingDataModel:
             "table_name": "housing_gap_analysis",
             "description": "Comprehensive housing gap analysis combining all data sources",
             "columns": {
-                "year": {"type": "int", "constraints": ["not_null", "range:2010-2023"]},
+                "year": {"type": "int", "constraints": ["not_null", "range:2009-2023"]},
                 "county_fips": {"type": "str", "constraints": ["not_null", "length:3"]},
                 "county_name": {"type": "str", "constraints": ["not_null"]},
                 "total_population": {"type": "int", "constraints": ["not_null", "positive"]},
@@ -273,7 +267,7 @@ class OregonHousingDataModel:
 
 class DataQualityFramework:
     """
-    Professional data quality assessment framework
+    Data quality assessment framework
     
     This class provides comprehensive data quality evaluation including:
     - Completeness checks
@@ -471,8 +465,8 @@ class DataQualityFramework:
         )
 
 def main():
-    """Demonstrate the professional data architecture"""
-    print("🏗️ Oregon Housing Analysis - Professional Data Architecture")
+    """Demonstrate the data architecture"""
+    print("🏗️ Oregon Housing Analysis - Data Architecture")
     print("=" * 60)
     
     # Initialize the data model
@@ -530,7 +524,7 @@ def main():
     print(f"  Consistency: {quality_metrics.consistency:.1%}")
     print(f"  Overall: {quality_metrics.overall_score.value.title()}")
     
-    print("\n✅ Professional data architecture ready for implementation!")
+    print("\n✅ Data architecture ready for implementation!")
 
 if __name__ == "__main__":
     main()

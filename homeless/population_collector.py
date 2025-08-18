@@ -334,15 +334,15 @@ class OregonPopulationDataCollector:
                 
                 # Create structured record with proper naming
                 record = {
-                    "year": year,                                    # Census year
-                    "county_fips": county_fips,                      # 3-digit county code
-                    "county_name": county_name,                      # Human-readable name
-                    "total_population": total_population,            # Total population (clear naming)
-                    "data_source": DataSource.CENSUS_DECENNIAL.value, # Data source identifier
-                    "margin_of_error": None,                         # Decennial has no margin of error
-                    "data_quality_score": quality_metrics.overall_score.value, # Quality assessment
-                    "collection_date": collection_date.strftime("%Y-%m-%d %H:%M:%S"), # When collected
-                    "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S") # Last update
+                    "year": year,                                                           # Census year
+                    "county_fips": county_fips,                                             # 3-digit county code
+                    "county_name": county_name,                                             # Human-readable name
+                    "total_population": total_population,                                   # Total population
+                    "data_source": DataSource.CENSUS_DECENNIAL.value,                       # Data source identifier
+                    "margin_of_error": None,                                                # Decennial has no margin of error
+                    "data_quality_score": quality_metrics.overall_score.value,              # Quality assessment
+                    "collection_date": collection_date.strftime("%Y-%m-%d %H:%M:%S"),       # When collected
+                    "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")            # Last update
                 }
                 
                 self.logger.debug(f"Row {i} - Created record: {record}")
@@ -437,15 +437,15 @@ class OregonPopulationDataCollector:
                 
                 # Create structured record with proper naming
                 processed_data.append({
-                    "year": year,                                    # ACS year
-                    "county_fips": county_fips,                      # 3-digit county code
-                    "county_name": county_name,                      # Human-readable name
-                    "total_population": total_population,            # Total population (clear naming)
-                    "data_source": DataSource.CENSUS_ACS.value,      # Data source identifier
-                    "margin_of_error": margin_of_error,              # Uncertainty in estimate
-                    "data_quality_score": quality_metrics.overall_score.value, # Quality assessment
+                    "year": year,                                                     # ACS year
+                    "county_fips": county_fips,                                       # 3-digit county code
+                    "county_name": county_name,                                       # Human-readable name
+                    "total_population": total_population,                             # Total population (clear naming)
+                    "data_source": DataSource.CENSUS_ACS.value,                       # Data source identifier
+                    "margin_of_error": margin_of_error,                               # Uncertainty in estimate
+                    "data_quality_score": quality_metrics.overall_score.value,        # Quality assessment
                     "collection_date": collection_date.strftime("%Y-%m-%d %H:%M:%S"), # When collected
-                    "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S") # Last update
+                    "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")      # Last update
                 })
                 
             except (ValueError, IndexError) as e:
@@ -478,9 +478,8 @@ class OregonPopulationDataCollector:
             all_data.extend(year_data)
             await asyncio.sleep(1)  # Rate limiting
         
-        # Collect ACS data for available years (2009-2023, excluding 2020 which uses decennial)
-        acs_years = list(range(2009, 2024))  # 2009-2023
-        acs_years.remove(2020)  # Remove 2020 since we use decennial data for that year
+        # Collect ACS data for available years (2009-2023, including 2020 for comparison)
+        acs_years = list(range(2009, 2024))  # 2009-2023 (including 2020)
         for year in acs_years:
             self.logger.info(f"Processing ACS year: {year}")
             year_data = self.get_acs_data(year)
@@ -539,8 +538,8 @@ class OregonPopulationDataCollector:
             self.logger.warning(f"Missing data for {missing_counties} counties")
         
         # Check for missing years
-        # Expected: 2009-2023 (15 years) + 2020 decennial = 15 unique years
-        expected_years = 15
+        # Expected: 2009-2023 (15 years) + 2020 decennial + 2020 ACS = 16 total records
+        expected_years = 16
         actual_years = df['year'].nunique()
         if actual_years < expected_years:
             missing_years = expected_years - actual_years
@@ -625,7 +624,7 @@ class OregonPopulationDataCollector:
             
             self.logger.info("Starting Oregon County Population Data Collection")
             self.logger.info(f"Target counties: {len(self.counties)}")
-            self.logger.info("Collection period: 2009-2023 (2020 uses decennial census)")
+            self.logger.info("Collection period: 2009-2023 (2020 has both decennial census and ACS)")
             self.logger.info("Data sources: Decennial Census (2020) + ACS Estimates (2009-2023)")
             
             # Collect data
@@ -680,7 +679,7 @@ async def main():
     print("=" * 55)
     print("📅 Collection Period: 2009-2023")
     print("🗺️  Coverage: All 36 Oregon Counties")
-    print("📊 Data Sources: Decennial Census (2020) + ACS Estimates (2009-2023)")
+    print("📊 Data Sources: Decennial Census (2020) + ACS Estimates (2009-2023, including 2020)")
     print("=" * 55)
     
     collector = OregonPopulationDataCollector()

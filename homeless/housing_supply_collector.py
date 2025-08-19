@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Oregon County Housing Supply Data Collector - Professional Edition
-================================================================
+Oregon County Housing Supply Data Collector
+==========================================
 
-This script implements a professional-grade housing supply data collection system
-with proper naming conventions, data quality assessment, and production-ready
+This script implements a production-ready housing supply data collection system
+with clear naming conventions, data quality assessment, and comprehensive
 error handling.
 
-Key Improvements:
-1. Clear naming: housing supply metrics (not "housed" data)
+Key Features:
+1. Clear naming: housing supply metrics (not confusing "housed" data)
 2. Comprehensive data quality assessment
 3. Production-ready error handling and monitoring
 4. Proper data lineage tracking
@@ -27,7 +27,7 @@ import json
 import asyncio
 import aiohttp
 from dataclasses import dataclass
-from professional_data_architecture import (
+from data_architecture import (
     OregonHousingDataModel, 
     DataQualityFramework, 
     DataSource, 
@@ -48,9 +48,9 @@ class CollectionMetrics:
 
 class OregonHousingSupplyCollector:
     """
-    Professional housing supply data collector for Oregon counties
+    Production-ready housing supply data collector for Oregon counties
     
-    This class implements production-ready data collection with:
+    This class implements comprehensive data collection with:
     - Clear, accurate naming conventions
     - Comprehensive data quality assessment
     - Robust error handling and retry logic
@@ -60,7 +60,7 @@ class OregonHousingSupplyCollector:
     """
     
     def __init__(self):
-        """Initialize the professional housing supply data collector"""
+        """Initialize the housing supply data collector"""
         # Data architecture components
         self.data_model = OregonHousingDataModel()
         self.quality_framework = DataQualityFramework()
@@ -96,20 +96,26 @@ class OregonHousingSupplyCollector:
     def setup_logging(self):
         """Configure comprehensive logging for production use"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        log_file = os.path.join(self.log_dir, f"professional_housing_supply_collection_{timestamp}.log")
+        log_file = os.path.join(self.log_dir, f"housing_supply_collection_{timestamp}.log")
+        
+        # Create handlers with proper level configuration
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.DEBUG)
+        
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
         
         # Configure logging with different levels for file vs console
         logging.basicConfig(
-            level=logging.INFO,
+            level=logging.DEBUG,  # Set root level to lowest to capture all
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler(log_file, level=logging.DEBUG),
-                logging.StreamHandler(level=logging.INFO)
+                file_handler, console_handler
             ]
         )
         
         self.logger = logging.getLogger(__name__)
-        self.logger.info(f"Starting Professional Oregon Housing Supply Data Collection - {timestamp}")
+        self.logger.info(f"Starting Oregon Housing Supply Data Collection - {timestamp}")
         
         # Log system configuration
         self.logger.info(f"Target counties: {len(self.counties)}")
@@ -176,15 +182,15 @@ class OregonHousingSupplyCollector:
         Collect comprehensive housing supply data from ACS for a specific year
         
         Args:
-            year: ACS year (2010-2023)
+            year: ACS year (2009-2023)
             
         Returns:
             List of dictionaries containing housing supply data for each county
         """
         self.logger.info(f"Collecting housing supply data for {year}")
         
-        # Comprehensive housing supply variables
-        variables = [
+        # Core housing supply variables (available in all years)
+        core_variables = [
             "B25001_001E",  # Total housing units
             "B25003_001E",  # Total occupied housing units
             "B25003_002E",  # Owner-occupied housing units
@@ -197,19 +203,57 @@ class OregonHousingSupplyCollector:
             "B25004_006E",  # Other vacant
             "B25064_001E",  # Median gross rent
             "B25077_001E",  # Median home value
-            "B25035_001E",  # Year structure built (median)
-            "B25034_001E",  # Year structure built (total)
-            "B25034_002E",  # Built 2014 or later
-            "B25034_003E",  # Built 2010-2013
-            "B25034_004E",  # Built 2000-2009
-            "B25034_005E",  # Built 1990-1999
-            "B25034_006E",  # Built 1980-1989
-            "B25034_007E",  # Built 1970-1979
-            "B25034_008E",  # Built 1960-1969
-            "B25034_009E",  # Built 1950-1959
-            "B25034_010E",  # Built 1940-1949
-            "B25034_011E"   # Built 1939 or earlier
         ]
+        
+        # Year structure built variables (availability varies by year)
+        if year >= 2015:
+            # Full set available from 2015 onwards
+            structure_variables = [
+                "B25035_001E",  # Year structure built (median)
+                "B25034_001E",  # Year structure built (total)
+                "B25034_002E",  # Built 2014 or later
+                "B25034_003E",  # Built 2010-2013
+                "B25034_004E",  # Built 2000-2009
+                "B25034_005E",  # Built 1990-1999
+                "B25034_006E",  # Built 1980-1989
+                "B25034_007E",  # Built 1970-1979
+                "B25034_008E",  # Built 1960-1969
+                "B25034_009E",  # Built 1950-1959
+                "B25034_010E",  # Built 1940-1949
+                "B25034_011E"   # Built 1939 or earlier
+            ]
+        elif year >= 2010:
+            # Limited set for 2010-2014
+            structure_variables = [
+                "B25035_001E",  # Year structure built (median)
+                "B25034_001E",  # Year structure built (total)
+                "B25034_002E",  # Built 2010 or later
+                "B25034_003E",  # Built 2000-2009
+                "B25034_004E",  # Built 1990-1999
+                "B25034_005E",  # Built 1980-1989
+                "B25034_006E",  # Built 1970-1979
+                "B25034_007E",  # Built 1960-1969
+                "B25034_008E",  # Built 1950-1959
+                "B25034_009E",  # Built 1940-1949
+                "B25034_010E"   # Built 1939 or earlier
+            ]
+        else:
+            # Minimal set for 2009
+            structure_variables = [
+                "B25035_001E",  # Year structure built (median)
+                "B25034_001E",  # Year structure built (total)
+                "B25034_002E",  # Built 2000 or later
+                "B25034_003E",  # Built 1990-1999
+                "B25034_004E",  # Built 1980-1989
+                "B25034_005E",  # Built 1970-1979
+                "B25034_006E",  # Built 1960-1969
+                "B25034_007E",  # Built 1950-1959
+                "B25034_008E",  # Built 1940-1949
+                "B25034_009E"   # Built 1939 or earlier
+            ]
+        
+        # Combine all variables
+        variables = core_variables + structure_variables
         
         url = f"{self.base_url}/{year}/acs/acs5"
         params = {
@@ -245,7 +289,7 @@ class OregonHousingSupplyCollector:
         
         for row in data[1:]:  # Skip header row
             try:
-                # Extract all housing supply variables
+                # Extract core housing supply variables (fixed positions)
                 total_housing_units = int(row[0]) if row[0] else None
                 total_occupied_units = int(row[1]) if row[1] else None
                 owner_occupied_units = int(row[2]) if row[2] else None
@@ -258,21 +302,57 @@ class OregonHousingSupplyCollector:
                 vacant_other = int(row[9]) if row[9] else None
                 median_gross_rent = int(row[10]) if row[10] else None
                 median_home_value = int(row[11]) if row[11] else None
-                median_year_built = int(row[12]) if row[12] else None
-                total_structures = int(row[13]) if row[13] else None
-                built_2014_later = int(row[14]) if row[14] else None
-                built_2010_2013 = int(row[15]) if row[15] else None
-                built_2000_2009 = int(row[16]) if row[16] else None
-                built_1990_1999 = int(row[17]) if row[17] else None
-                built_1980_1989 = int(row[18]) if row[18] else None
-                built_1970_1979 = int(row[19]) if row[19] else None
-                built_1960_1969 = int(row[20]) if row[20] else None
-                built_1950_1959 = int(row[21]) if row[21] else None
-                built_1940_1949 = int(row[22]) if row[22] else None
-                built_1939_earlier = int(row[23]) if row[23] else None
                 
-                # Extract county information
-                county_fips = row[25]  # Position after all variables
+                # Extract structure variables (positions vary by year)
+                base_index = 12
+                median_year_built = int(row[base_index]) if row[base_index] else None
+                total_structures = int(row[base_index + 1]) if row[base_index + 1] else None
+                
+                # Handle different structure variable sets by year
+                if year >= 2015:
+                    # Full set available
+                    built_2014_later = int(row[base_index + 2]) if row[base_index + 2] else None
+                    built_2010_2013 = int(row[base_index + 3]) if row[base_index + 3] else None
+                    built_2000_2009 = int(row[base_index + 4]) if row[base_index + 4] else None
+                    built_1990_1999 = int(row[base_index + 5]) if row[base_index + 5] else None
+                    built_1980_1989 = int(row[base_index + 6]) if row[base_index + 6] else None
+                    built_1970_1979 = int(row[base_index + 7]) if row[base_index + 7] else None
+                    built_1960_1969 = int(row[base_index + 8]) if row[base_index + 8] else None
+                    built_1950_1959 = int(row[base_index + 9]) if row[base_index + 9] else None
+                    built_1940_1949 = int(row[base_index + 10]) if row[base_index + 10] else None
+                    built_1939_earlier = int(row[base_index + 11]) if row[base_index + 11] else None
+                elif year >= 2010:
+                    # Limited set for 2010-2014
+                    built_2010_later = int(row[base_index + 2]) if row[base_index + 2] else None
+                    built_2000_2009 = int(row[base_index + 3]) if row[base_index + 3] else None
+                    built_1990_1999 = int(row[base_index + 4]) if row[base_index + 4] else None
+                    built_1980_1989 = int(row[base_index + 5]) if row[base_index + 5] else None
+                    built_1970_1979 = int(row[base_index + 6]) if row[base_index + 6] else None
+                    built_1960_1969 = int(row[base_index + 7]) if row[base_index + 7] else None
+                    built_1950_1959 = int(row[base_index + 8]) if row[base_index + 8] else None
+                    built_1940_1949 = int(row[base_index + 9]) if row[base_index + 9] else None
+                    built_1939_earlier = int(row[base_index + 10]) if row[base_index + 10] else None
+                    # Set missing variables to None
+                    built_2014_later = None
+                    built_2010_2013 = None
+                else:
+                    # Minimal set for 2009
+                    built_2000_later = int(row[base_index + 2]) if row[base_index + 2] else None
+                    built_1990_1999 = int(row[base_index + 3]) if row[base_index + 3] else None
+                    built_1980_1989 = int(row[base_index + 4]) if row[base_index + 4] else None
+                    built_1970_1979 = int(row[base_index + 5]) if row[base_index + 5] else None
+                    built_1960_1969 = int(row[base_index + 6]) if row[base_index + 6] else None
+                    built_1950_1959 = int(row[base_index + 7]) if row[base_index + 7] else None
+                    built_1940_1949 = int(row[base_index + 8]) if row[base_index + 8] else None
+                    built_1939_earlier = int(row[base_index + 9]) if row[base_index + 9] else None
+                    # Set missing variables to None
+                    built_2014_later = None
+                    built_2010_2013 = None
+                    built_2000_2009 = None
+                
+                # Extract county information (Census API returns: variables, state, county)
+                # The county FIPS is always the last element in the row
+                county_fips = row[-1]  # Last position is county FIPS
                 county_name = self.counties.get(county_fips, f"Unknown County {county_fips}")
                 
                 # Calculate derived metrics
@@ -280,16 +360,25 @@ class OregonHousingSupplyCollector:
                 homeownership_rate = (owner_occupied_units / total_occupied_units * 100) if owner_occupied_units and total_occupied_units else None
                 rental_rate = (renter_occupied_units / total_occupied_units * 100) if renter_occupied_units and total_occupied_units else None
                 
-                # Calculate new construction metrics
-                new_construction_units = built_2014_later + built_2010_2013 if built_2014_later and built_2010_2013 else None
-                recent_construction_units = built_2000_2009 + built_2010_2013 + built_2014_later if all([built_2000_2009, built_2010_2013, built_2014_later]) else None
+                # Calculate new construction metrics (handle different variable sets)
+                if year >= 2015:
+                    new_construction_units = built_2014_later + built_2010_2013 if built_2014_later and built_2010_2013 else None
+                    recent_construction_units = built_2000_2009 + built_2010_2013 + built_2014_later if all([built_2000_2009, built_2010_2013, built_2014_later]) else None
+                elif year >= 2010:
+                    new_construction_units = built_2010_later if built_2010_later else None
+                    recent_construction_units = built_2000_2009 + built_2010_later if built_2000_2009 and built_2010_later else None
+                else:
+                    new_construction_units = built_2000_later if built_2000_later else None
+                    recent_construction_units = built_2000_later if built_2000_later else None
                 
                 # Assess data quality for this record
                 quality_metrics = self.quality_framework.assess_dataset_quality(
                     pd.DataFrame([{
                         'total_housing_units': total_housing_units,
                         'total_occupied_units': total_occupied_units,
-                        'total_vacant_units': total_vacant_units
+                        'total_vacant_units': total_vacant_units,
+                        'county_fips': county_fips,
+                        'year': year
                     }]),
                     DataSource.CENSUS_ACS.value,
                     collection_date,
@@ -401,8 +490,8 @@ class OregonHousingSupplyCollector:
         """
         all_data = []
         
-        # Collect ACS housing supply data for 2010-2023
-        acs_years = list(range(2010, 2024))  # 2010-2023
+        # Collect ACS housing supply data for 2009-2023
+        acs_years = list(range(2009, 2024))  # 2009-2023
         
         for year in acs_years:
             self.logger.info(f"Processing housing supply year: {year}")
@@ -448,7 +537,7 @@ class OregonHousingSupplyCollector:
             self.logger.warning(f"Missing data for {missing_counties} counties")
         
         # Check for missing years
-        expected_years = 14  # 2010-2023
+        expected_years = 15  # 2009-2023
         actual_years = df['year'].nunique()
         if actual_years < expected_years:
             missing_years = expected_years - actual_years
@@ -481,14 +570,14 @@ class OregonHousingSupplyCollector:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         # Save timestamped version (preserved for history)
-        filename = f"oregon_county_housing_supply_2010_2023_acs_{timestamp}.csv"
+        filename = f"oregon_county_housing_supply_2009_2023_acs_{timestamp}.csv"
         filepath = os.path.join(self.historic_dir, filename)
         
         df.to_csv(filepath, index=False)
         self.logger.info(f"Timestamped data saved to: {filepath}")
         
         # Save standard version (overwritten each time for easy access)
-        standard_filename = "oregon_county_housing_supply_2010_2023_acs.csv"
+        standard_filename = "oregon_county_housing_supply_2009_2023_acs.csv"
         standard_filepath = os.path.join(self.output_dir, standard_filename)
         
         df.to_csv(standard_filepath, index=False)
@@ -538,9 +627,9 @@ class OregonHousingSupplyCollector:
         try:
             self.collection_start_time = time.time()
             
-            self.logger.info("Starting Professional Oregon County Housing Supply Data Collection")
+            self.logger.info("Starting Oregon County Housing Supply Data Collection")
             self.logger.info(f"Target counties: {len(self.counties)}")
-            self.logger.info("Collection period: 2010-2023")
+            self.logger.info("Collection period: 2009-2023")
             self.logger.info("Data sources: ACS Estimates + Building Permits (placeholder)")
             
             # Collect data
@@ -582,16 +671,16 @@ class OregonHousingSupplyCollector:
             filepath = self.save_data(df)
             self.save_collection_metrics(metrics)
             
-            self.logger.info("Professional housing supply data collection completed successfully!")
+            self.logger.info("Housing supply data collection completed successfully!")
             return filepath, metrics
             
         except Exception as e:
-            self.logger.error(f"Professional housing supply data collection failed: {str(e)}")
+            self.logger.error(f"Housing supply data collection failed: {str(e)}")
             raise
 
 async def main():
     """Main execution function"""
-    print("🏗️ Professional Oregon Housing Supply Data Collection")
+    print("🏗️ Oregon Housing Supply Data Collection")
     print("=" * 58)
     
     collector = OregonHousingSupplyCollector()
@@ -599,7 +688,7 @@ async def main():
     try:
         filepath, metrics = await collector.run_collection()
         
-        print(f"\n✅ Professional housing supply data collection completed successfully!")
+        print(f"\n✅ Housing supply data collection completed successfully!")
         print(f"📁 Output file: {filepath}")
         print(f"📊 Collection metrics:")
         print(f"   - Total records: {metrics.total_records:,}")
@@ -612,7 +701,7 @@ async def main():
         print(f"📈 Check the metrics in: {collector.metrics_dir}")
         
     except Exception as e:
-        print(f"❌ Professional housing supply data collection failed: {str(e)}")
+        print(f"❌ Housing supply data collection failed: {str(e)}")
         print(f"📋 Check the logs in: {collector.log_dir}")
 
 if __name__ == "__main__":

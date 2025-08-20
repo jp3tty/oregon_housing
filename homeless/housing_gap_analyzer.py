@@ -23,7 +23,7 @@ import os
 from typing import Dict, List, Optional, Tuple, Any
 import json
 from dataclasses import dataclass
-from professional_data_architecture import (
+from data_architecture import (
     OregonHousingDataModel, 
     DataQualityFramework, 
     DataSource, 
@@ -79,9 +79,9 @@ class OregonHousingGapAnalyzer:
         self.analysis_dir = os.path.join(self.historic_dir, "gap_analysis")
         self.log_dir = os.path.join(self.historic_dir, "analysis_logs")
         
-        # Setup logging and directories
-        self.setup_logging()
+        # Setup directories first, then logging
         self.setup_directories()
+        self.setup_logging()
         
         # Analysis parameters
         self.affordability_threshold = 0.30  # 30% of income for housing
@@ -105,12 +105,19 @@ class OregonHousingGapAnalyzer:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         log_file = os.path.join(self.log_dir, f"housing_gap_analysis_{timestamp}.log")
         
+        # Create handlers with proper level configuration
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.DEBUG)
+        
+        console_handler = logging.StreamHandler()
+        console_handler.setLevel(logging.INFO)
+        
+        # Configure logging with different levels for file vs console
         logging.basicConfig(
-            level=logging.INFO,
+            level=logging.DEBUG,  # Set root level to lowest to capture all
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler(log_file, level=logging.DEBUG),
-                logging.StreamHandler(level=logging.INFO)
+                file_handler, console_handler
             ]
         )
         
@@ -127,7 +134,7 @@ class OregonHousingGapAnalyzer:
         self.logger.info("Loading data sources for analysis")
         
         # Load population data
-        population_file = os.path.join(self.output_dir, "oregon_county_population_1990_2023_census_acs.csv")
+        population_file = os.path.join(self.output_dir, "oregon_county_population_2009_2023_census_acs.csv")
         if os.path.exists(population_file):
             population_data = pd.read_csv(population_file)
             self.logger.info(f"Loaded population data: {len(population_data)} records")
@@ -136,7 +143,7 @@ class OregonHousingGapAnalyzer:
             population_data = pd.DataFrame()
         
         # Load housing supply data
-        housing_supply_file = os.path.join(self.output_dir, "oregon_county_housing_supply_2010_2023_acs.csv")
+        housing_supply_file = os.path.join(self.output_dir, "oregon_county_housing_supply_2009_2023_acs.csv")
         if os.path.exists(housing_supply_file):
             housing_supply_data = pd.read_csv(housing_supply_file)
             self.logger.info(f"Loaded housing supply data: {len(housing_supply_data)} records")
@@ -144,11 +151,16 @@ class OregonHousingGapAnalyzer:
             self.logger.warning("Housing supply data file not found, using empty DataFrame")
             housing_supply_data = pd.DataFrame()
         
-        # Load housing demand data (placeholder for now)
-        housing_demand_data = pd.DataFrame()
-        self.logger.info("Housing demand data not yet implemented")
+        # Load income data
+        income_file = os.path.join(self.output_dir, "oregon_county_income_2009_2023_acs.csv")
+        if os.path.exists(income_file):
+            income_data = pd.read_csv(income_file)
+            self.logger.info(f"Loaded income data: {len(income_data)} records")
+        else:
+            self.logger.warning("Income data file not found, using empty DataFrame")
+            income_data = pd.DataFrame()
         
-        return population_data, housing_supply_data, housing_demand_data
+        return population_data, housing_supply_data, income_data
     
     def calculate_supply_gap(self, population: int, housing_units: int, 
                            household_size: float = 2.5) -> int:
@@ -318,7 +330,8 @@ class OregonHousingGapAnalyzer:
     
     def analyze_county_housing(self, year: int, county_fips: str, 
                               population_data: pd.DataFrame, 
-                              housing_supply_data: pd.DataFrame) -> Optional[CountyHousingAnalysis]:
+                              housing_supply_data: pd.DataFrame,
+                              income_data: pd.DataFrame) -> Optional[CountyHousingAnalysis]:
         """
         Perform comprehensive housing analysis for a single county
         
@@ -359,7 +372,18 @@ class OregonHousingGapAnalyzer:
             total_population = pop_data['total_population']
             total_housing_units = housing_data['total_housing_units']
             total_households = housing_data['total_occupied_units']
-            median_income = None  # Would come from housing demand data
+            # Get income data for this county and year
+            income_row = income_data[
+                (income_data['year'] == year) & 
+                (income_data['county_fips'] == county_fips)
+            ]
+            
+            if not income_row.empty:
+                income_data_row = income_row.iloc[0]
+                median_income = income_data_row['median_household_income']
+            else:
+                median_income = None
+                self.logger.warning(f"No income data for county {county_fips} in {year}")
             median_rent = housing_data['median_gross_rent']
             median_home_value = housing_data['median_home_value']
             
@@ -420,7 +444,7 @@ class OregonHousingGapAnalyzer:
             self.logger.error(f"Error analyzing county {county_fips} for year {year}: {str(e)}")
             return None
     
-    def run_comprehensive_analysis(self, start_year: int = 2010, end_year: int = 2023) -> pd.DataFrame:
+    def run_comprehensive_analysis(self, start_year: int = 2009, end_year: int = 2023) -> pd.DataFrame:
         """
         Run comprehensive housing gap analysis for all counties and years
         
@@ -434,7 +458,7 @@ class OregonHousingGapAnalyzer:
         self.logger.info(f"Starting comprehensive housing gap analysis for {start_year}-{end_year}")
         
         # Load data sources
-        population_data, housing_supply_data, housing_demand_data = self.load_data_sources()
+        population_data, housing_supply_data, income_data = self.load_data_sources()
         
         if population_data.empty or housing_supply_data.empty:
             self.logger.error("Insufficient data for analysis")
@@ -459,7 +483,7 @@ class OregonHousingGapAnalyzer:
             
             for county_fips in available_counties:
                 analysis = self.analyze_county_housing(
-                    year, county_fips, population_data, housing_supply_data
+                    year, county_fips, population_data, housing_supply_data, income_data
                 )
                 
                 if analysis:
@@ -552,14 +576,14 @@ class OregonHousingGapAnalyzer:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         # Save timestamped version
-        filename = f"oregon_county_housing_gap_analysis_2010_2023_{timestamp}.csv"
+        filename = f"oregon_county_housing_gap_analysis_2009_2023_{timestamp}.csv"
         filepath = os.path.join(self.analysis_dir, filename)
         
         df.to_csv(filepath, index=False)
         self.logger.info(f"Timestamped analysis results saved to: {filepath}")
         
         # Save standard version
-        standard_filename = "oregon_county_housing_gap_analysis_2010_2023.csv"
+        standard_filename = "oregon_county_housing_gap_analysis_2009_2023.csv"
         standard_filepath = os.path.join(self.output_dir, standard_filename)
         
         df.to_csv(standard_filepath, index=False)
@@ -703,7 +727,7 @@ def main():
     analyzer = OregonHousingGapAnalyzer()
     
     try:
-        filepath = analyzer.run_analysis(2010, 2023)
+        filepath = analyzer.run_analysis(2009, 2023)
         
         if filepath:
             print(f"\n✅ Professional housing gap analysis completed successfully!")

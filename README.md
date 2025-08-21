@@ -56,22 +56,22 @@ python3 homeless/income_collector.py
 
 ```
 oregon_housing/
-├── homeless/                          # Main project directory
-│   ├── data_architecture.py          # Core data models and quality framework
-│   ├── housing_gap_analyzer.py       # Gap analysis engine (Phase 4)
-│   ├── housing_supply_collector.py   # Housing supply data collection ✅
-│   ├── population_collector.py       # Population data collection ✅
-│   ├── income_collector.py           # Income data collection ✅
-│   ├── IMPLEMENTATION_GUIDE.md       # Detailed implementation documentation
-│   ├── project_synopsis.txt          # Project overview and scope
-│   ├── requirements.txt              # Python dependencies
-│   └── resources.txt                 # Data source references
-├── Data_Collection_Output/           # Output data and logs
+├── homeless/                                                   # Main project directory
+│   ├── data_architecture.py                                    # Core data models and quality framework
+│   ├── housing_gap_analyzer.py                                 # Gap analysis engine (Phase 4)
+│   ├── housing_supply_collector.py                             # Housing supply data collection ✅
+│   ├── population_collector.py                                 # Population data collection ✅
+│   ├── income_collector.py                                     # Income data collection ✅
+│   ├── IMPLEMENTATION_GUIDE.md                                 # Detailed implementation documentation
+│   ├── project_synopsis.txt                                    # Project overview and scope
+│   ├── requirements.txt                                        # Python dependencies
+│   └── resources.txt                                           # Data source references
+├── Data_Collection_Output/                                     # Output data and logs
 │   ├── oregon_county_population_2009_2023_census_acs.csv
 │   ├── oregon_county_housing_supply_2009_2023_acs.csv
 │   ├── oregon_county_income_2009_2023_acs.csv
-│   └── historic_data/               # Historical data and collection logs
-└── README.md                         # This file
+│   └── historic_data/                                          # Historical data and collection logs
+└── README.md                                                   # This file
 ```
 
 ## 🔍 Data Models

@@ -1,0 +1,947 @@
+{
+  "report_timestamp": "20250822_082711",
+  "analysis_summary": {
+    "total_counties": 36,
+    "years_analyzed": 15,
+    "metrics_analyzed": 6,
+    "forecast_horizon": 5
+  },
+  "trend_analysis": {
+    "median_household_income": {
+      "trend_direction": "increasing",
+      "trend_strength": 0.811612421569877,
+      "annual_change_rate": 1739.8209015350253,
+      "significance_level": "high"
+    },
+    "housing_stress_score": {
+      "trend_direction": "stable",
+      "trend_strength": 0.7593169435333625,
+      "annual_change_rate": 0.31351595880526817,
+      "significance_level": "high"
+    },
+    "supply_gap": {
+      "trend_direction": "increasing",
+      "trend_strength": 0.11936278345870743,
+      "annual_change_rate": 30.423038918893127,
+      "significance_level": "low"
+    },
+    "affordability_gap": {
+      "trend_direction": "increasing",
+      "trend_strength": 0.4098409718048668,
+      "annual_change_rate": 152.85021331387145,
+      "significance_level": "medium"
+    }
+  },
+  "forecasting_results": {
+    "housing_stress_score": {
+      "model_type": "linear",
+      "model_accuracy": 0.7593169435333625,
+      "predicted_values": [
+        56.00327720503842,
+        56.31679316384369,
+        56.63030912264896,
+        56.94382508145423,
+        57.25819998809184
+      ],
+      "key_factors": [
+        "Linear trend: 0.0009 per day"
+      ]
+    },
+    "supply_gap": {
+      "model_type": "linear",
+      "model_accuracy": 0.11936278345870743,
+      "predicted_values": [
+        -3194.9796588338377,
+        -3164.5566199149443,
+        -3134.1335809960515,
+        -3103.710542077158,
+        -3073.2041523667067
+      ],
+      "key_factors": [
+        "Linear trend: 0.0834 per day"
+      ]
+    },
+    "affordability_gap": {
+      "model_type": "linear",
+      "model_accuracy": 0.4098409718048668,
+      "predicted_values": [
+        9640.688614823845,
+        9793.538828137716,
+        9946.389041451588,
+        10099.23925476546,
+        10252.50823578704
+      ],
+      "key_factors": [
+        "Linear trend: 0.4188 per day"
+      ]
+    }
+  },
+  "county_rankings": [
+    {
+      "county_name": "Washington County",
+      "county_fips": 67,
+      "overall_score": 0.7283951614430185,
+      "rank": 1,
+      "percentile": 100.0,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Marion County",
+      "county_fips": 47,
+      "overall_score": 0.710043395112177,
+      "rank": 2,
+      "percentile": 97.22222222222221,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Multnomah County",
+      "county_fips": 51,
+      "overall_score": 0.655115584129982,
+      "rank": 3,
+      "percentile": 94.44444444444444,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Yamhill County",
+      "county_fips": 71,
+      "overall_score": 0.6056590702875437,
+      "rank": 4,
+      "percentile": 91.66666666666666,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Clackamas County",
+      "county_fips": 5,
+      "overall_score": 0.5490360891013589,
+      "rank": 5,
+      "percentile": 88.88888888888889,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Polk County",
+      "county_fips": 53,
+      "overall_score": 0.5220882101556488,
+      "rank": 6,
+      "percentile": 86.11111111111111,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Lane County",
+      "county_fips": 39,
+      "overall_score": 0.5114018654143856,
+      "rank": 7,
+      "percentile": 83.33333333333334,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Jackson County",
+      "county_fips": 29,
+      "overall_score": 0.4607493605841309,
+      "rank": 8,
+      "percentile": 80.55555555555556,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Linn County",
+      "county_fips": 43,
+      "overall_score": 0.4584471649429863,
+      "rank": 9,
+      "percentile": 77.77777777777779,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Malheur County",
+      "county_fips": 45,
+      "overall_score": 0.4504906505389346,
+      "rank": 10,
+      "percentile": 75.0,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Umatilla County",
+      "county_fips": 59,
+      "overall_score": 0.4426446264555189,
+      "rank": 11,
+      "percentile": 72.22222222222221,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Benton County",
+      "county_fips": 3,
+      "overall_score": 0.44164195730522965,
+      "rank": 12,
+      "percentile": 69.44444444444444,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Josephine County",
+      "county_fips": 33,
+      "overall_score": 0.42866584615526865,
+      "rank": 13,
+      "percentile": 66.66666666666666,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Douglas County",
+      "county_fips": 19,
+      "overall_score": 0.4266023249284542,
+      "rank": 14,
+      "percentile": 63.888888888888886,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Columbia County",
+      "county_fips": 9,
+      "overall_score": 0.40156366171961755,
+      "rank": 15,
+      "percentile": 61.111111111111114,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Coos County",
+      "county_fips": 11,
+      "overall_score": 0.40053085423952656,
+      "rank": 16,
+      "percentile": 58.333333333333336,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Deschutes County",
+      "county_fips": 17,
+      "overall_score": 0.3990274373222291,
+      "rank": 17,
+      "percentile": 55.55555555555556,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Klamath County",
+      "county_fips": 35,
+      "overall_score": 0.3953649817786,
+      "rank": 18,
+      "percentile": 52.77777777777778,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Hood River County",
+      "county_fips": 27,
+      "overall_score": 0.3750811542290221,
+      "rank": 19,
+      "percentile": 50.0,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Wasco County",
+      "county_fips": 65,
+      "overall_score": 0.3737188458670927,
+      "rank": 20,
+      "percentile": 47.22222222222222,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Union County",
+      "county_fips": 61,
+      "overall_score": 0.36788004126487583,
+      "rank": 21,
+      "percentile": 44.44444444444444,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Clatsop County",
+      "county_fips": 7,
+      "overall_score": 0.36599478572845023,
+      "rank": 22,
+      "percentile": 41.66666666666667,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Crook County",
+      "county_fips": 13,
+      "overall_score": 0.3617710254928246,
+      "rank": 23,
+      "percentile": 38.88888888888889,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Curry County",
+      "county_fips": 15,
+      "overall_score": 0.36024554901000333,
+      "rank": 24,
+      "percentile": 36.11111111111111,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Lincoln County",
+      "county_fips": 41,
+      "overall_score": 0.35029162650292905,
+      "rank": 25,
+      "percentile": 33.33333333333333,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Tillamook County",
+      "county_fips": 57,
+      "overall_score": 0.3414191573989081,
+      "rank": 26,
+      "percentile": 30.555555555555557,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Jefferson County",
+      "county_fips": 31,
+      "overall_score": 0.33820599882504154,
+      "rank": 27,
+      "percentile": 27.77777777777778,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Baker County",
+      "county_fips": 1,
+      "overall_score": 0.3196341518912476,
+      "rank": 28,
+      "percentile": 25.0,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Wallowa County",
+      "county_fips": 63,
+      "overall_score": 0.26328384036590124,
+      "rank": 29,
+      "percentile": 22.22222222222222,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Lake County",
+      "county_fips": 37,
+      "overall_score": 0.22745859658954604,
+      "rank": 30,
+      "percentile": 19.444444444444446,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Grant County",
+      "county_fips": 23,
+      "overall_score": 0.22165234892997843,
+      "rank": 31,
+      "percentile": 16.666666666666664,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Morrow County",
+      "county_fips": 49,
+      "overall_score": 0.2061943944331532,
+      "rank": 32,
+      "percentile": 13.88888888888889,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Harney County",
+      "county_fips": 25,
+      "overall_score": 0.19923545503807222,
+      "rank": 33,
+      "percentile": 11.11111111111111,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Wheeler County",
+      "county_fips": 69,
+      "overall_score": 0.16028566023941587,
+      "rank": 34,
+      "percentile": 8.333333333333332,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Sherman County",
+      "county_fips": 55,
+      "overall_score": 0.15973082948646458,
+      "rank": 35,
+      "percentile": 5.555555555555555,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    },
+    {
+      "county_name": "Gilliam County",
+      "county_fips": 21,
+      "overall_score": 0.15699145695309802,
+      "rank": 36,
+      "percentile": 2.7777777777777777,
+      "strengths": [
+        "Strong housing supply"
+      ],
+      "weaknesses": [
+        "High housing costs"
+      ],
+      "peer_counties": [
+        "County A",
+        "County B"
+      ],
+      "improvement_opportunities": [
+        "Increase affordable housing",
+        "Improve housing quality"
+      ]
+    }
+  ],
+  "regional_analysis": [
+    {
+      "region_name": "Region 1",
+      "counties_included": [
+        "Baker County",
+        "Benton County",
+        "Clatsop County",
+        "Columbia County",
+        "Coos County",
+        "Crook County",
+        "Curry County",
+        "Douglas County",
+        "Hood River County",
+        "Jefferson County",
+        "Josephine County",
+        "Klamath County",
+        "Lincoln County",
+        "Linn County",
+        "Malheur County",
+        "Polk County",
+        "Tillamook County",
+        "Umatilla County",
+        "Union County",
+        "Wasco County",
+        "Yamhill County"
+      ],
+      "average_stress_score": 61.57645833333334,
+      "common_challenges": [
+        "High housing costs",
+        "Limited supply"
+      ],
+      "unique_characteristics": [
+        "Urban counties",
+        "High population density"
+      ],
+      "policy_recommendations": [
+        "Increase housing supply",
+        "Improve affordability programs"
+      ]
+    },
+    {
+      "region_name": "Region 2",
+      "counties_included": [
+        "Multnomah County"
+      ],
+      "average_stress_score": 65.0,
+      "common_challenges": [
+        "High housing costs",
+        "Limited supply"
+      ],
+      "unique_characteristics": [
+        "Urban counties",
+        "High population density"
+      ],
+      "policy_recommendations": [
+        "Increase housing supply",
+        "Improve affordability programs"
+      ]
+    },
+    {
+      "region_name": "Region 3",
+      "counties_included": [
+        "Clackamas County",
+        "Deschutes County",
+        "Jackson County",
+        "Lane County",
+        "Marion County",
+        "Washington County"
+      ],
+      "average_stress_score": 75.33265625,
+      "common_challenges": [
+        "High housing costs",
+        "Limited supply"
+      ],
+      "unique_characteristics": [
+        "Urban counties",
+        "High population density"
+      ],
+      "policy_recommendations": [
+        "Increase housing supply",
+        "Improve affordability programs"
+      ]
+    },
+    {
+      "region_name": "Region 4",
+      "counties_included": [
+        "Gilliam County",
+        "Grant County",
+        "Harney County",
+        "Lake County",
+        "Morrow County",
+        "Sherman County",
+        "Wallowa County",
+        "Wheeler County"
+      ],
+      "average_stress_score": 13.733046875000001,
+      "common_challenges": [
+        "High housing costs",
+        "Limited supply"
+      ],
+      "unique_characteristics": [
+        "Urban counties",
+        "High population density"
+      ],
+      "policy_recommendations": [
+        "Increase housing supply",
+        "Improve affordability programs"
+      ]
+    }
+  ]
+}

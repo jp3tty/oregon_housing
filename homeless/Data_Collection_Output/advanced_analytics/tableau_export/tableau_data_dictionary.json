@@ -1,0 +1,72 @@
+{
+  "tableau_population_data.csv": {
+    "description": "Population data for all Oregon counties from 2009-2023",
+    "fields": {
+      "year": "Data collection year",
+      "county_fips": "County FIPS code",
+      "county_name": "County name",
+      "total_population": "Total population count",
+      "data_source": "Source of population data",
+      "population_change": "Year-over-year population change",
+      "population_change_pct": "Year-over-year population change percentage"
+    }
+  },
+  "tableau_housing_data.csv": {
+    "description": "Housing supply data for all Oregon counties from 2009-2023",
+    "fields": {
+      "year": "Data collection year",
+      "county_fips": "County FIPS code",
+      "county_name": "County name",
+      "total_housing_units": "Total housing units available",
+      "vacancy_rate_percent": "Vacancy rate percentage",
+      "homeownership_rate_percent": "Homeownership rate percentage",
+      "median_home_value": "Median home value",
+      "median_gross_rent": "Median monthly rent",
+      "housing_growth": "Year-over-year housing unit growth",
+      "housing_growth_pct": "Year-over-year housing growth percentage"
+    }
+  },
+  "tableau_income_data.csv": {
+    "description": "Income and affordability data for all Oregon counties from 2009-2023",
+    "fields": {
+      "year": "Data collection year",
+      "county_fips": "County FIPS code",
+      "county_name": "County name",
+      "median_household_income": "Median household income",
+      "income_change": "Year-over-year income change",
+      "income_change_pct": "Year-over-year income change percentage"
+    }
+  },
+  "tableau_gap_analysis_data.csv": {
+    "description": "Comprehensive housing gap analysis for all Oregon counties from 2009-2023",
+    "fields": {
+      "year": "Analysis year",
+      "county_fips": "County FIPS code",
+      "county_name": "County name",
+      "housing_stress_score": "Overall housing stress score (0-100)",
+      "supply_gap": "Housing supply gap (units needed vs. available)",
+      "affordability_gap": "Affordability gap (households unable to afford housing)",
+      "quality_gap": "Housing quality gap (substandard units)",
+      "homeless_gap": "Homeless population gap",
+      "total_gap_score": "Combined gap score across all dimensions"
+    }
+  },
+  "tableau_summary_data.csv": {
+    "description": "Latest summary data for all Oregon counties",
+    "fields": {
+      "county_fips": "County FIPS code",
+      "county_name": "County name",
+      "latest_year": "Most recent data year",
+      "total_population": "Latest population count",
+      "total_housing_units": "Latest housing unit count",
+      "median_household_income": "Latest median household income",
+      "housing_stress_score": "Latest housing stress score",
+      "supply_gap": "Latest supply gap",
+      "affordability_gap": "Latest affordability gap",
+      "quality_gap": "Latest quality gap",
+      "homeless_gap": "Latest homeless gap",
+      "vacancy_rate": "Latest vacancy rate",
+      "homeownership_rate": "Latest homeownership rate"
+    }
+  }
+}

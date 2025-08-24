@@ -78,37 +78,223 @@ class OregonHomelessDataCollector:
         self.hud_pit_base_url = "https://www.huduser.gov/portal/datasets/pit/"
         self.hud_pit_years = list(range(2007, datetime.now().year + 1))
         
-        # Oregon county homeless data sources
+        # Oregon county homeless data sources - All 36 counties
         self.county_homeless_sources = {
-            "051": {  # Multnomah (Portland)
-                "pit_data": True,
-                "local_surveys": True,
-                "shelter_data": True,
-                "notes": "Comprehensive homeless data available"
+            "001": {  # Baker County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
             },
-            "067": {  # Washington (Beaverton/Hillsboro)
-                "pit_data": True,
-                "local_surveys": True,
-                "shelter_data": True,
-                "notes": "Good homeless data coverage"
+            "003": {  # Benton County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "University town - limited homeless data"
             },
-            "005": {  # Clackamas (Suburban Portland)
+            "005": {  # Clackamas County
                 "pit_data": True,
                 "local_surveys": False,
                 "shelter_data": True,
                 "notes": "PIT data + shelter capacity"
             },
-            "039": {  # Lane (Eugene)
+            "007": {  # Clatsop County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Coastal county - no homeless data available"
+            },
+            "009": {  # Columbia County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "011": {  # Coos County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Coastal county - no homeless data available"
+            },
+            "013": {  # Crook County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "015": {  # Curry County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Coastal county - no homeless data available"
+            },
+            "017": {  # Deschutes County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Bend area - limited homeless data"
+            },
+            "019": {  # Douglas County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "021": {  # Gilliam County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "023": {  # Grant County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "025": {  # Harney County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "027": {  # Hood River County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Tourist area - limited homeless data"
+            },
+            "029": {  # Jackson County
+                "pit_data": True,
+                "local_surveys": False,
+                "shelter_data": True,
+                "notes": "PIT data + shelter capacity"
+            },
+            "031": {  # Jefferson County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "033": {  # Josephine County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "035": {  # Klamath County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "037": {  # Lake County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "039": {  # Lane County
                 "pit_data": True,
                 "local_surveys": True,
                 "shelter_data": True,
                 "notes": "Strong local homeless data"
             },
-            "029": {  # Jackson (Medford)
-                "pit_data": True,
+            "041": {  # Lincoln County
+                "pit_data": False,
                 "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Coastal county - no homeless data available"
+            },
+            "043": {  # Linn County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "045": {  # Malheur County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "047": {  # Marion County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Salem area - limited homeless data"
+            },
+            "049": {  # Morrow County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "051": {  # Multnomah County
+                "pit_data": True,
+                "local_surveys": True,
                 "shelter_data": True,
-                "notes": "PIT data + shelter capacity"
+                "notes": "Comprehensive homeless data available"
+            },
+            "053": {  # Polk County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "055": {  # Sherman County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "057": {  # Tillamook County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Coastal county - no homeless data available"
+            },
+            "059": {  # Umatilla County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "061": {  # Union County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "063": {  # Wallowa County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "065": {  # Wasco County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "067": {  # Washington County
+                "pit_data": True,
+                "local_surveys": True,
+                "shelter_data": True,
+                "notes": "Good homeless data coverage"
+            },
+            "069": {  # Wheeler County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
+            },
+            "071": {  # Yamhill County
+                "pit_data": False,
+                "local_surveys": False,
+                "shelter_data": False,
+                "notes": "Rural county - no homeless data available"
             }
         }
         
@@ -160,6 +346,7 @@ class OregonHomelessDataCollector:
             # In production, this would integrate with actual HUD APIs or data files
             
             # Oregon county homeless data from HUD PIT (approximate historical data)
+            # Only counties with actual PIT data have values, others will be NaN
             hud_pit_data = {
                 "2007": {
                     "051": {"total": 2500, "sheltered": 1800, "unsheltered": 700, "chronic": 800},
@@ -167,6 +354,7 @@ class OregonHomelessDataCollector:
                     "005": {"total": 600, "sheltered": 450, "unsheltered": 150, "chronic": 100},
                     "039": {"total": 1200, "sheltered": 900, "unsheltered": 300, "chronic": 250},
                     "029": {"total": 400, "sheltered": 300, "unsheltered": 100, "chronic": 80}
+                    # All other counties (001, 003, 007, 009, 011, 013, 015, 017, 019, 021, 023, 025, 027, 031, 033, 035, 037, 041, 043, 045, 047, 049, 053, 055, 057, 059, 061, 063, 065, 069, 071) have no PIT data
                 },
                 "2008": {
                     "051": {"total": 2600, "sheltered": 1850, "unsheltered": 750, "chronic": 850},
@@ -282,26 +470,56 @@ class OregonHomelessDataCollector:
                 }
             }
             
-            # Convert to DataFrame
+            # Convert to DataFrame - Handle all 36 counties
             records = []
-            for county_fips, homeless_data in hud_pit_data.get(str(year), {}).items():
-                record = {
-                    "year": year,
-                    "county_fips": county_fips,
-                    "county_name": self.data_model.counties.get(county_fips, f"County {county_fips}"),
-                    "total_homeless": homeless_data["total"],
-                    "sheltered_homeless": homeless_data["sheltered"],
-                    "unsheltered_homeless": homeless_data["unsheltered"],
-                    "chronic_homeless": homeless_data["chronic"],
-                    "homeless_families": int(homeless_data["total"] * 0.25),  # Estimate 25% families
-                    "homeless_veterans": int(homeless_data["total"] * 0.08),  # Estimate 8% veterans
-                    "shelter_capacity": int(homeless_data["sheltered"] * 1.2),  # 20% buffer capacity
-                    "shelter_utilization_rate": homeless_data["sheltered"] / (homeless_data["sheltered"] * 1.2),
-                    "data_source": DataSource.HUD_PIT.value,
-                    "data_quality_score": "excellent",
-                    "collection_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                }
+            
+            # Get available PIT data for this year
+            year_pit_data = hud_pit_data.get(str(year), {})
+            
+            # Process all 36 Oregon counties
+            for county_fips in self.county_homeless_sources.keys():
+                county_name = self.data_model.counties.get(county_fips, f"County {county_fips}")
+                
+                if county_fips in year_pit_data:
+                    # County has PIT data
+                    homeless_data = year_pit_data[county_fips]
+                    record = {
+                        "year": year,
+                        "county_fips": county_fips,
+                        "county_name": county_name,
+                        "total_homeless": homeless_data["total"],
+                        "sheltered_homeless": homeless_data["sheltered"],
+                        "unsheltered_homeless": homeless_data["unsheltered"],
+                        "chronic_homeless": homeless_data["chronic"],
+                        "homeless_families": int(homeless_data["total"] * 0.25),  # Estimate 25% families
+                        "homeless_veterans": int(homeless_data["total"] * 0.08),  # Estimate 8% veterans
+                        "shelter_capacity": int(homeless_data["sheltered"] * 1.2),  # 20% buffer capacity
+                        "shelter_utilization_rate": homeless_data["sheltered"] / (homeless_data["sheltered"] * 1.2),
+                        "data_source": DataSource.HUD_PIT.value,
+                        "data_quality_score": "excellent",
+                        "collection_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                else:
+                    # County has no PIT data - set to null
+                    record = {
+                        "year": year,
+                        "county_fips": county_fips,
+                        "county_name": county_name,
+                        "total_homeless": None,
+                        "sheltered_homeless": None,
+                        "unsheltered_homeless": None,
+                        "chronic_homeless": None,
+                        "homeless_families": None,
+                        "homeless_veterans": None,
+                        "shelter_capacity": None,
+                        "shelter_utilization_rate": None,
+                        "data_source": "no_data_available",
+                        "data_quality_score": "no_data",
+                        "collection_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                
                 records.append(record)
             
             df = pd.DataFrame(records)
@@ -331,8 +549,10 @@ class OregonHomelessDataCollector:
             
             shelter_data = []
             for county_fips, source_info in self.county_homeless_sources.items():
+                county_name = self.data_model.counties.get(county_fips, f"County {county_fips}")
+                
                 if source_info.get("shelter_data"):
-                    # Generate shelter data based on county characteristics
+                    # County has shelter data
                     county_population = self._get_county_population_estimate(county_fips, year)
                     
                     # Estimate shelter capacity based on population and homeless rates
@@ -343,7 +563,7 @@ class OregonHomelessDataCollector:
                     record = {
                         "year": year,
                         "county_fips": county_fips,
-                        "county_name": self.data_model.counties.get(county_fips, f"County {county_fips}"),
+                        "county_name": county_name,
                         "shelter_capacity": shelter_capacity,
                         "emergency_shelter_beds": int(shelter_capacity * 0.6),
                         "transitional_housing_beds": int(shelter_capacity * 0.3),
@@ -354,7 +574,24 @@ class OregonHomelessDataCollector:
                         "collection_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     }
-                    shelter_data.append(record)
+                else:
+                    # County has no shelter data - set to null
+                    record = {
+                        "year": year,
+                        "county_fips": county_fips,
+                        "county_name": county_name,
+                        "shelter_capacity": None,
+                        "emergency_shelter_beds": None,
+                        "transitional_housing_beds": None,
+                        "permanent_supportive_housing": None,
+                        "shelter_utilization_rate": None,
+                        "data_source": "no_shelter_data",
+                        "data_quality_score": "no_data",
+                        "collection_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    }
+                
+                shelter_data.append(record)
             
             df = pd.DataFrame(shelter_data)
             self.logger.info(f"Collected local shelter data for {len(df)} counties in {year}")
@@ -422,10 +659,56 @@ class OregonHomelessDataCollector:
             combined_df = combined_df.sort_values(['county_fips', 'year', 'data_source']).reset_index(drop=True)
             
             self.logger.info(f"Comprehensive homeless data collection complete: {len(combined_df)} records")
+            
+            # Print summary of data availability
+            self.print_data_availability_summary(combined_df)
+            
             return combined_df
         else:
             self.logger.warning("No homeless data collected")
             return pd.DataFrame()
+    
+    def print_data_availability_summary(self, df: pd.DataFrame) -> None:
+        """Print summary of data availability across all counties"""
+        try:
+            # Get unique counties and years
+            counties = df['county_fips'].unique()
+            years = df['year'].unique()
+            
+            print("\n" + "="*80)
+            print("HOMELESS DATA AVAILABILITY SUMMARY")
+            print("="*80)
+            print(f"Total Counties: {len(counties)}")
+            print(f"Years Covered: {len(years)} ({min(years)}-{max(years)})")
+            print(f"Total Records: {len(df)}")
+            
+            # Analyze data availability by county
+            print("\nCOUNTY DATA AVAILABILITY:")
+            print("-" * 50)
+            
+            counties_with_pit = df[df['data_source'] == 'hud_pit']['county_fips'].unique()
+            counties_with_shelter = df[df['data_source'] == 'shelter_data']['county_fips'].unique()
+            counties_with_no_data = df[df['data_source'] == 'no_data_available']['county_fips'].unique()
+            
+            print(f"Counties with HUD PIT Data: {len(counties_with_pit)}")
+            for fips in sorted(counties_with_pit):
+                county_name = df[df['county_fips'] == fips]['county_name'].iloc[0]
+                print(f"  - {county_name} ({fips})")
+            
+            print(f"\nCounties with Shelter Data: {len(counties_with_shelter)}")
+            for fips in sorted(counties_with_shelter):
+                county_name = df[df['county_fips'] == fips]['county_name'].iloc[0]
+                print(f"  - {county_name} ({fips})")
+            
+            print(f"\nCounties with NO Homeless Data: {len(counties_with_no_data)}")
+            for fips in sorted(counties_with_no_data):
+                county_name = df[df['county_fips'] == fips]['county_name'].iloc[0]
+                print(f"  - {county_name} ({fips}) - Data unavailable")
+            
+            print("\n" + "="*80)
+            
+        except Exception as e:
+            self.logger.error(f"Error printing data availability summary: {str(e)}")
     
     def save_homeless_data(self, df: pd.DataFrame) -> str:
         """
@@ -517,6 +800,8 @@ def main():
             print(f"   - Homeless type classification (sheltered, unsheltered, chronic)")
             print(f"   - Comprehensive data quality assessment")
             print(f"   - Multi-source data integration")
+            print(f"   - Complete coverage of all 36 Oregon counties")
+            print(f"   - Clear identification of data availability vs. missing data")
         else:
             print("❌ Homeless data collection failed - no results generated")
             

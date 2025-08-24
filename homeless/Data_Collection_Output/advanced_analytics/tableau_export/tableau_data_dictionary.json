@@ -1,6 +1,6 @@
 {
   "tableau_population_data.csv": {
-    "description": "Population data for all Oregon counties from 2009-2023",
+    "description": "Population data for all Oregon counties from 2009-2023 with geographic coordinates",
     "fields": {
       "year": "Data collection year",
       "county_fips": "County FIPS code",
@@ -8,11 +8,15 @@
       "total_population": "Total population count",
       "data_source": "Source of population data",
       "population_change": "Year-over-year population change",
-      "population_change_pct": "Year-over-year population change percentage"
+      "population_change_pct": "Year-over-year population change percentage",
+      "latitude": "County latitude coordinate for mapping",
+      "longitude": "County longitude coordinate for mapping",
+      "centroid_lat": "County centroid latitude for precise mapping",
+      "centroid_lng": "County centroid longitude for precise mapping"
     }
   },
   "tableau_housing_data.csv": {
-    "description": "Housing supply data for all Oregon counties from 2009-2023",
+    "description": "Housing supply data for all Oregon counties from 2009-2023 with geographic coordinates",
     "fields": {
       "year": "Data collection year",
       "county_fips": "County FIPS code",
@@ -23,22 +27,30 @@
       "median_home_value": "Median home value",
       "median_gross_rent": "Median monthly rent",
       "housing_growth": "Year-over-year housing unit growth",
-      "housing_growth_pct": "Year-over-year housing growth percentage"
+      "housing_growth_pct": "Year-over-year housing growth percentage",
+      "latitude": "County latitude coordinate for mapping",
+      "longitude": "County longitude coordinate for mapping",
+      "centroid_lat": "County centroid latitude for precise mapping",
+      "centroid_lng": "County centroid longitude for precise mapping"
     }
   },
   "tableau_income_data.csv": {
-    "description": "Income and affordability data for all Oregon counties from 2009-2023",
+    "description": "Income and affordability data for all Oregon counties from 2009-2023 with geographic coordinates",
     "fields": {
       "year": "Data collection year",
       "county_fips": "County FIPS code",
       "county_name": "County name",
       "median_household_income": "Median household income",
       "income_change": "Year-over-year income change",
-      "income_change_pct": "Year-over-year income change percentage"
+      "income_change_pct": "Year-over-year income change percentage",
+      "latitude": "County latitude coordinate for mapping",
+      "longitude": "County longitude coordinate for mapping",
+      "centroid_lat": "County centroid latitude for precise mapping",
+      "centroid_lng": "County centroid longitude for precise mapping"
     }
   },
   "tableau_gap_analysis_data.csv": {
-    "description": "Comprehensive housing gap analysis for all Oregon counties from 2009-2023",
+    "description": "Comprehensive housing gap analysis for all Oregon counties from 2009-2023 with geographic coordinates",
     "fields": {
       "year": "Analysis year",
       "county_fips": "County FIPS code",
@@ -48,11 +60,15 @@
       "affordability_gap": "Affordability gap (households unable to afford housing)",
       "quality_gap": "Housing quality gap (substandard units)",
       "homeless_gap": "Homeless population gap",
-      "total_gap_score": "Combined gap score across all dimensions"
+      "total_gap_score": "Combined gap score across all dimensions",
+      "latitude": "County latitude coordinate for mapping",
+      "longitude": "County longitude coordinate for mapping",
+      "centroid_lat": "County centroid latitude for precise mapping",
+      "centroid_lng": "County centroid longitude for precise mapping"
     }
   },
   "tableau_summary_data.csv": {
-    "description": "Latest summary data for all Oregon counties",
+    "description": "Latest summary data for all Oregon counties with geographic coordinates",
     "fields": {
       "county_fips": "County FIPS code",
       "county_name": "County name",
@@ -66,7 +82,38 @@
       "quality_gap": "Latest quality gap",
       "homeless_gap": "Latest homeless gap",
       "vacancy_rate": "Latest vacancy rate",
-      "homeownership_rate": "Latest homeownership rate"
+      "homeownership_rate": "Latest homeownership rate",
+      "latitude": "County latitude coordinate for mapping",
+      "longitude": "County longitude coordinate for mapping",
+      "centroid_lat": "County centroid latitude for precise mapping",
+      "centroid_lng": "County centroid longitude for precise mapping"
+    }
+  },
+  "tableau_homeless_data.csv": {
+    "description": "Detailed homeless data with shelter status breakdown for all Oregon counties from 2007-2023 with geographic coordinates",
+    "fields": {
+      "year": "Data collection year",
+      "county_fips": "County FIPS code",
+      "county_name": "County name",
+      "total_homeless": "Total homeless count (sheltered + unsheltered)",
+      "sheltered_homeless": "Homeless in shelters/transitional housing",
+      "unsheltered_homeless": "Homeless on streets/outdoors",
+      "chronic_homeless": "Chronic homelessness (1+ year)",
+      "homeless_families": "Homeless families with children",
+      "homeless_veterans": "Homeless veterans",
+      "shelter_capacity": "Total shelter beds available",
+      "shelter_utilization_rate": "Percentage of shelter capacity used",
+      "emergency_shelter_beds": "Emergency shelter bed count",
+      "transitional_housing_beds": "Transitional housing bed count",
+      "permanent_supportive_housing": "Permanent supportive housing units",
+      "homeless_change": "Year-over-year homeless count change",
+      "homeless_change_pct": "Year-over-year homeless change percentage",
+      "sheltered_pct": "Percentage of homeless who are sheltered",
+      "unsheltered_pct": "Percentage of homeless who are unsheltered",
+      "latitude": "County latitude coordinate for mapping",
+      "longitude": "County longitude coordinate for mapping",
+      "centroid_lat": "County centroid latitude for precise mapping",
+      "centroid_lng": "County centroid longitude for precise mapping"
     }
   }
 }

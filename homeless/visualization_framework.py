@@ -604,6 +604,7 @@ class OregonHousingVisualizationFramework:
             self.create_tableau_income_dataset()
             self.create_tableau_gap_analysis_dataset()
             self.create_tableau_summary_dataset()
+            self.create_tableau_homeless_dataset()
             
             # Create Tableau data dictionary
             self.create_tableau_data_dictionary()
@@ -615,17 +616,34 @@ class OregonHousingVisualizationFramework:
             raise
             
     def create_tableau_population_dataset(self):
-        """Create Tableau-ready population dataset"""
+        """Create Tableau-ready population dataset with geographic coordinates"""
         try:
             # Clean and format population data for Tableau
             tableau_population = self.population_data.copy()
             
-            # Ensure year is in proper format
-            tableau_population['year'] = pd.to_datetime(tableau_population['year']).dt.year
+            # Ensure year is in proper format (already an integer, no conversion needed)
+            # tableau_population['year'] is already in the correct format (2009, 2010, etc.)
             
             # Add calculated fields
             tableau_population['population_change'] = tableau_population.groupby('county_fips')['total_population'].diff()
             tableau_population['population_change_pct'] = tableau_population.groupby('county_fips')['total_population'].pct_change() * 100
+            
+            # Add geographic coordinates for mapping
+            try:
+                from oregon_counties_geographic import OregonCountiesGeographic
+                geo = OregonCountiesGeographic()
+                geo_df = geo.get_all_coordinates()
+                
+                # Merge geographic data
+                tableau_population = tableau_population.merge(
+                    geo_df[['county_fips', 'latitude', 'longitude', 'centroid_lat', 'centroid_lng']], 
+                    on='county_fips', 
+                    how='left'
+                )
+                
+                self.logger.info("Geographic coordinates added to population dataset")
+            except ImportError:
+                self.logger.warning("Geographic module not available, coordinates not added")
             
             # Save Tableau-ready dataset
             export_file = os.path.join(self.tableau_export_dir, 'tableau_population_data.csv')
@@ -637,17 +655,34 @@ class OregonHousingVisualizationFramework:
             self.logger.error(f"Error creating Tableau population dataset: {str(e)}")
             
     def create_tableau_housing_dataset(self):
-        """Create Tableau-ready housing dataset"""
+        """Create Tableau-ready housing dataset with geographic coordinates"""
         try:
             # Clean and format housing data for Tableau
             tableau_housing = self.housing_supply_data.copy()
             
-            # Ensure year is in proper format
-            tableau_housing['year'] = pd.to_datetime(tableau_housing['year']).dt.year
+            # Ensure year is in proper format (already an integer, no conversion needed)
+            # tableau_housing['year'] is already in the correct format (2009, 2010, etc.)
             
             # Add calculated fields
             tableau_housing['housing_growth'] = tableau_housing.groupby('county_fips')['total_housing_units'].diff()
             tableau_housing['housing_growth_pct'] = tableau_housing.groupby('county_fips')['total_housing_units'].pct_change() * 100
+            
+            # Add geographic coordinates for mapping
+            try:
+                from oregon_counties_geographic import OregonCountiesGeographic
+                geo = OregonCountiesGeographic()
+                geo_df = geo.get_all_coordinates()
+                
+                # Merge geographic data
+                tableau_housing = tableau_housing.merge(
+                    geo_df[['county_fips', 'latitude', 'longitude', 'centroid_lat', 'centroid_lng']], 
+                    on='county_fips', 
+                    how='left'
+                )
+                
+                self.logger.info("Geographic coordinates added to housing dataset")
+            except ImportError:
+                self.logger.warning("Geographic module not available, coordinates not added")
             
             # Save Tableau-ready dataset
             export_file = os.path.join(self.tableau_export_dir, 'tableau_housing_data.csv')
@@ -659,17 +694,34 @@ class OregonHousingVisualizationFramework:
             self.logger.error(f"Error creating Tableau housing dataset: {str(e)}")
             
     def create_tableau_income_dataset(self):
-        """Create Tableau-ready income dataset"""
+        """Create Tableau-ready income dataset with geographic coordinates"""
         try:
             # Clean and format income data for Tableau
             tableau_income = self.income_data.copy()
             
-            # Ensure year is in proper format
-            tableau_income['year'] = pd.to_datetime(tableau_income['year']).dt.year
+            # Ensure year is in proper format (already an integer, no conversion needed)
+            # tableau_income['year'] is already in the correct format (2009, 2010, etc.)
             
             # Add calculated fields
             tableau_income['income_change'] = tableau_income.groupby('county_fips')['median_household_income'].diff()
             tableau_income['income_change_pct'] = tableau_income.groupby('county_fips')['median_household_income'].pct_change() * 100
+            
+            # Add geographic coordinates for mapping
+            try:
+                from oregon_counties_geographic import OregonCountiesGeographic
+                geo = OregonCountiesGeographic()
+                geo_df = geo.get_all_coordinates()
+                
+                # Merge geographic data
+                tableau_income = tableau_income.merge(
+                    geo_df[['county_fips', 'latitude', 'longitude', 'centroid_lat', 'centroid_lng']], 
+                    on='county_fips', 
+                    how='left'
+                )
+                
+                self.logger.info("Geographic coordinates added to income dataset")
+            except ImportError:
+                self.logger.warning("Geographic module not available, coordinates not added")
             
             # Save Tableau-ready dataset
             export_file = os.path.join(self.tableau_export_dir, 'tableau_income_data.csv')
@@ -681,13 +733,13 @@ class OregonHousingVisualizationFramework:
             self.logger.error(f"Error creating Tableau income dataset: {str(e)}")
             
     def create_tableau_gap_analysis_dataset(self):
-        """Create Tableau-ready gap analysis dataset"""
+        """Create Tableau-ready gap analysis dataset with geographic coordinates"""
         try:
             # Clean and format gap analysis data for Tableau
             tableau_gap = self.gap_analysis_data.copy()
             
-            # Ensure year is in proper format
-            tableau_gap['year'] = pd.to_datetime(tableau_gap['year']).dt.year
+            # Ensure year is in proper format (already an integer, no conversion needed)
+            # tableau_gap['year'] is already in the correct format (2009, 2010, etc.)
             
             # Add calculated fields
             tableau_gap['total_gap_score'] = (
@@ -696,6 +748,23 @@ class OregonHousingVisualizationFramework:
                 tableau_gap['quality_gap'] + 
                 tableau_gap['homeless_gap']
             )
+            
+            # Add geographic coordinates for mapping
+            try:
+                from oregon_counties_geographic import OregonCountiesGeographic
+                geo = OregonCountiesGeographic()
+                geo_df = geo.get_all_coordinates()
+                
+                # Merge geographic data
+                tableau_gap = tableau_gap.merge(
+                    geo_df[['county_fips', 'latitude', 'longitude', 'centroid_lat', 'centroid_lng']], 
+                    on='county_fips', 
+                    how='left'
+                )
+                
+                self.logger.info("Geographic coordinates added to gap analysis dataset")
+            except ImportError:
+                self.logger.warning("Geographic module not available, coordinates not added")
             
             # Save Tableau-ready dataset
             export_file = os.path.join(self.tableau_export_dir, 'tableau_gap_analysis_data.csv')
@@ -739,8 +808,27 @@ class OregonHousingVisualizationFramework:
                 
                 summary_data.append(summary_row)
                 
-            # Convert to DataFrame and save
+            # Convert to DataFrame
             summary_df = pd.DataFrame(summary_data)
+            
+            # Add geographic coordinates for mapping
+            try:
+                from oregon_counties_geographic import OregonCountiesGeographic
+                geo = OregonCountiesGeographic()
+                geo_df = geo.get_all_coordinates()
+                
+                # Merge geographic data
+                summary_df = summary_df.merge(
+                    geo_df[['county_fips', 'latitude', 'longitude', 'centroid_lat', 'centroid_lng']], 
+                    on='county_fips', 
+                    how='left'
+                )
+                
+                self.logger.info("Geographic coordinates added to summary dataset")
+            except ImportError:
+                self.logger.warning("Geographic module not available, coordinates not added")
+            
+            # Save Tableau-ready dataset
             export_file = os.path.join(self.tableau_export_dir, 'tableau_summary_data.csv')
             summary_df.to_csv(export_file, index=False)
             
@@ -749,12 +837,127 @@ class OregonHousingVisualizationFramework:
         except Exception as e:
             self.logger.error(f"Error creating Tableau summary dataset: {str(e)}")
             
+    def create_tableau_homeless_dataset(self):
+        """Create Tableau-ready homeless dataset with detailed shelter status and geographic coordinates"""
+        try:
+            # Load the detailed homeless data
+            homeless_file = os.path.join(self.output_dir, "oregon_county_homeless_data.csv")
+            if not os.path.exists(homeless_file):
+                self.logger.warning("Homeless data file not found, skipping homeless dataset creation")
+                return
+                
+            homeless_data = pd.read_csv(homeless_file)
+            
+            # Include ALL counties, not just those with PIT data
+            # Get unique counties and years to create complete dataset
+            all_counties = homeless_data['county_fips'].unique()
+            all_years = homeless_data['year'].unique()
+            
+            # Create complete dataset with all counties and years
+            complete_records = []
+            for county_fips in all_counties:
+                for year in all_years:
+                    # Get data for this county/year combination
+                    county_data = homeless_data[(homeless_data['county_fips'] == county_fips) & 
+                                              (homeless_data['year'] == year)]
+                    
+                    if not county_data.empty:
+                        # County has data for this year
+                        if 'hud_pit' in county_data['data_source'].values:
+                            # Use PIT data if available
+                            row_data = county_data[county_data['data_source'] == 'hud_pit'].iloc[0]
+                        else:
+                            # Use any available data
+                            row_data = county_data.iloc[0]
+                        
+                        record = {
+                            'year': year,
+                            'county_fips': county_fips,
+                            'county_name': row_data['county_name'],
+                            'total_homeless': row_data['total_homeless'],
+                            'sheltered_homeless': row_data['sheltered_homeless'],
+                            'unsheltered_homeless': row_data['unsheltered_homeless'],
+                            'chronic_homeless': row_data['chronic_homeless'],
+                            'homeless_families': row_data['homeless_families'],
+                            'homeless_veterans': row_data['homeless_veterans'],
+                            'shelter_capacity': row_data['shelter_capacity'],
+                            'shelter_utilization_rate': row_data['shelter_utilization_rate'],
+                            'emergency_shelter_beds': row_data['emergency_shelter_beds'],
+                            'transitional_housing_beds': row_data['transitional_housing_beds'],
+                            'permanent_supportive_housing': row_data['permanent_supportive_housing']
+                        }
+                    else:
+                        # No data for this county/year - create record with null values
+                        county_name = homeless_data[homeless_data['county_fips'] == county_fips]['county_name'].iloc[0]
+                        record = {
+                            'year': year,
+                            'county_fips': county_fips,
+                            'county_name': county_name,
+                            'total_homeless': None,
+                            'sheltered_homeless': None,
+                            'unsheltered_homeless': None,
+                            'chronic_homeless': None,
+                            'homeless_families': None,
+                            'homeless_veterans': None,
+                            'shelter_capacity': None,
+                            'shelter_utilization_rate': None,
+                            'emergency_shelter_beds': None,
+                            'transitional_housing_beds': None,
+                            'permanent_supportive_housing': None
+                        }
+                    
+                    complete_records.append(record)
+            
+            tableau_homeless = pd.DataFrame(complete_records)
+            
+            # Add calculated fields
+            tableau_homeless['homeless_change'] = tableau_homeless.groupby('county_fips')['total_homeless'].diff()
+            tableau_homeless['homeless_change_pct'] = tableau_homeless.groupby('county_fips')['total_homeless'].pct_change() * 100
+            
+            # Calculate percentages only for non-null values
+            mask = tableau_homeless['total_homeless'].notna()
+            tableau_homeless.loc[mask, 'sheltered_pct'] = (tableau_homeless.loc[mask, 'sheltered_homeless'] / 
+                                                          tableau_homeless.loc[mask, 'total_homeless'] * 100).round(1)
+            tableau_homeless.loc[mask, 'unsheltered_pct'] = (tableau_homeless.loc[mask, 'unsheltered_homeless'] / 
+                                                            tableau_homeless.loc[mask, 'total_homeless'] * 100).round(1)
+            
+            # Add geographic coordinates for mapping
+            try:
+                from oregon_counties_geographic import OregonCountiesGeographic
+                geo = OregonCountiesGeographic()
+                geo_df = geo.get_all_coordinates()
+                
+                # Merge geographic data
+                tableau_homeless = tableau_homeless.merge(
+                    geo_df[['county_fips', 'latitude', 'longitude', 'centroid_lat', 'centroid_lng']], 
+                    on='county_fips', 
+                    how='left'
+                )
+                
+                self.logger.info("Geographic coordinates added to homeless dataset")
+            except ImportError:
+                self.logger.warning("Geographic module not available, coordinates not added")
+            
+            # Save Tableau-ready dataset
+            export_file = os.path.join(self.tableau_export_dir, 'tableau_homeless_data.csv')
+            
+            # Replace NaN values with empty strings for better Tableau compatibility
+            tableau_homeless_export = tableau_homeless.copy()
+            tableau_homeless_export = tableau_homeless_export.fillna('')
+            
+            tableau_homeless_export.to_csv(export_file, index=False)
+            
+            self.logger.info(f"Tableau homeless dataset created: {export_file}")
+            
+        except Exception as e:
+            self.logger.error(f"Error creating Tableau homeless dataset: {str(e)}")
+            
     def create_tableau_data_dictionary(self):
         """Create Tableau data dictionary"""
         try:
             data_dictionary = {
                 "tableau_population_data.csv": {
-                    "description": "Population data for all Oregon counties from 2009-2023",
+                    "description": "Population data for all Oregon counties from 2009-2023 with geographic coordinates",
                     "fields": {
                         "year": "Data collection year",
                         "county_fips": "County FIPS code",
@@ -762,11 +965,15 @@ class OregonHousingVisualizationFramework:
                         "total_population": "Total population count",
                         "data_source": "Source of population data",
                         "population_change": "Year-over-year population change",
-                        "population_change_pct": "Year-over-year population change percentage"
+                        "population_change_pct": "Year-over-year population change percentage",
+                        "latitude": "County latitude coordinate for mapping",
+                        "longitude": "County longitude coordinate for mapping",
+                        "centroid_lat": "County centroid latitude for precise mapping",
+                        "centroid_lng": "County centroid longitude for precise mapping"
                     }
                 },
                 "tableau_housing_data.csv": {
-                    "description": "Housing supply data for all Oregon counties from 2009-2023",
+                    "description": "Housing supply data for all Oregon counties from 2009-2023 with geographic coordinates",
                     "fields": {
                         "year": "Data collection year",
                         "county_fips": "County FIPS code",
@@ -777,22 +984,30 @@ class OregonHousingVisualizationFramework:
                         "median_home_value": "Median home value",
                         "median_gross_rent": "Median monthly rent",
                         "housing_growth": "Year-over-year housing unit growth",
-                        "housing_growth_pct": "Year-over-year housing growth percentage"
+                        "housing_growth_pct": "Year-over-year housing growth percentage",
+                        "latitude": "County latitude coordinate for mapping",
+                        "longitude": "County longitude coordinate for mapping",
+                        "centroid_lat": "County centroid latitude for precise mapping",
+                        "centroid_lng": "County centroid longitude for precise mapping"
                     }
                 },
                 "tableau_income_data.csv": {
-                    "description": "Income and affordability data for all Oregon counties from 2009-2023",
+                    "description": "Income and affordability data for all Oregon counties from 2009-2023 with geographic coordinates",
                     "fields": {
                         "year": "Data collection year",
                         "county_fips": "County FIPS code",
                         "county_name": "County name",
                         "median_household_income": "Median household income",
                         "income_change": "Year-over-year income change",
-                        "income_change_pct": "Year-over-year income change percentage"
+                        "income_change_pct": "Year-over-year income change percentage",
+                        "latitude": "County latitude coordinate for mapping",
+                        "longitude": "County longitude coordinate for mapping",
+                        "centroid_lat": "County centroid latitude for precise mapping",
+                        "centroid_lng": "County centroid longitude for precise mapping"
                     }
                 },
                 "tableau_gap_analysis_data.csv": {
-                    "description": "Comprehensive housing gap analysis for all Oregon counties from 2009-2023",
+                    "description": "Comprehensive housing gap analysis for all Oregon counties from 2009-2023 with geographic coordinates",
                     "fields": {
                         "year": "Analysis year",
                         "county_fips": "County FIPS code",
@@ -802,11 +1017,15 @@ class OregonHousingVisualizationFramework:
                         "affordability_gap": "Affordability gap (households unable to afford housing)",
                         "quality_gap": "Housing quality gap (substandard units)",
                         "homeless_gap": "Homeless population gap",
-                        "total_gap_score": "Combined gap score across all dimensions"
+                        "total_gap_score": "Combined gap score across all dimensions",
+                        "latitude": "County latitude coordinate for mapping",
+                        "longitude": "County longitude coordinate for mapping",
+                        "centroid_lat": "County centroid latitude for precise mapping",
+                        "centroid_lng": "County centroid longitude for precise mapping"
                     }
                 },
                 "tableau_summary_data.csv": {
-                    "description": "Latest summary data for all Oregon counties",
+                    "description": "Latest summary data for all Oregon counties with geographic coordinates",
                     "fields": {
                         "county_fips": "County FIPS code",
                         "county_name": "County name",
@@ -820,7 +1039,38 @@ class OregonHousingVisualizationFramework:
                         "quality_gap": "Latest quality gap",
                         "homeless_gap": "Latest homeless gap",
                         "vacancy_rate": "Latest vacancy rate",
-                        "homeownership_rate": "Latest homeownership rate"
+                        "homeownership_rate": "Latest homeownership rate",
+                        "latitude": "County latitude coordinate for mapping",
+                        "longitude": "County longitude coordinate for mapping",
+                        "centroid_lat": "County centroid latitude for precise mapping",
+                        "centroid_lng": "County centroid longitude for precise mapping"
+                    }
+                },
+                "tableau_homeless_data.csv": {
+                    "description": "Detailed homeless data with shelter status breakdown for all Oregon counties from 2007-2023 with geographic coordinates",
+                    "fields": {
+                        "year": "Data collection year",
+                        "county_fips": "County FIPS code",
+                        "county_name": "County name",
+                        "total_homeless": "Total homeless count (sheltered + unsheltered)",
+                        "sheltered_homeless": "Homeless in shelters/transitional housing",
+                        "unsheltered_homeless": "Homeless on streets/outdoors",
+                        "chronic_homeless": "Chronic homelessness (1+ year)",
+                        "homeless_families": "Homeless families with children",
+                        "homeless_veterans": "Homeless veterans",
+                        "shelter_capacity": "Total shelter beds available",
+                        "shelter_utilization_rate": "Percentage of shelter capacity used",
+                        "emergency_shelter_beds": "Emergency shelter bed count",
+                        "transitional_housing_beds": "Transitional housing bed count",
+                        "permanent_supportive_housing": "Permanent supportive housing units",
+                        "homeless_change": "Year-over-year homeless count change",
+                        "homeless_change_pct": "Year-over-year homeless change percentage",
+                        "sheltered_pct": "Percentage of homeless who are sheltered",
+                        "unsheltered_pct": "Percentage of homeless who are unsheltered",
+                        "latitude": "County latitude coordinate for mapping",
+                        "longitude": "County longitude coordinate for mapping",
+                        "centroid_lat": "County centroid latitude for precise mapping",
+                        "centroid_lng": "County centroid longitude for precise mapping"
                     }
                 }
             }

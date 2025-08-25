@@ -19,12 +19,12 @@ import json
 class DataSource(Enum):
     """Enumeration of data sources for tracking data lineage"""
     CENSUS_DECENNIAL = "census_decennial"
-    CENSUS_ACS = "census_acs"
     HUD_PIT = "hud_pit"
     BUILDING_PERMITS = "building_permits"
     INCOME_DATA = "income_data"
     LOCAL_SURVEYS = "local_surveys"
     SHELTER_DATA = "shelter_data"
+    REAL_TIME_DATA = "real_time_data"
 
 class DataQualityLevel(Enum):
     """Data quality assessment levels"""
@@ -124,7 +124,7 @@ class OregonHousingDataModel:
                 "county_fips": {"type": "str", "constraints": ["not_null", "length:3"]},
                 "county_name": {"type": "str", "constraints": ["not_null"]},
                 "total_population": {"type": "int", "constraints": ["not_null", "positive"]},
-                "data_source": {"type": "str", "constraints": ["not_null", "enum:census_decennial,census_acs"]},
+                "data_source": {"type": "str", "constraints": ["not_null", "enum:census_decennial,hud_pit"]},
                 "margin_of_error": {"type": "float", "constraints": ["nullable"]},
                 "data_quality_score": {"type": "str", "constraints": ["not_null"]},
                 "collection_date": {"type": "datetime", "constraints": ["not_null"]},
@@ -157,7 +157,7 @@ class OregonHousingDataModel:
                 "vacant_other": {"type": "int", "constraints": ["nullable", "non_negative"]},
                 "building_permits_issued": {"type": "int", "constraints": ["nullable", "non_negative"]},
                 "new_construction_units": {"type": "int", "constraints": ["nullable", "non_negative"]},
-                "data_source": {"type": "str", "constraints": ["not_null", "enum:census_acs,building_permits"]},
+                "data_source": {"type": "str", "constraints": ["not_null", "enum:hud_pit,building_permits"]},
                 "data_quality_score": {"type": "str", "constraints": ["not_null"]},
                 "collection_date": {"type": "datetime", "constraints": ["not_null"]},
                 "last_updated": {"type": "datetime", "constraints": ["not_null"]}
@@ -188,7 +188,7 @@ class OregonHousingDataModel:
                 "median_home_value": {"type": "int", "constraints": ["nullable", "positive"]},
                 "affordability_index": {"type": "float", "constraints": ["nullable", "range:0-100"]},
                 "cost_burdened_households": {"type": "int", "constraints": ["nullable", "non_negative"]},
-                "data_source": {"type": "str", "constraints": ["not_null", "enum:census_acs,income_data"]},
+                "data_source": {"type": "str", "constraints": ["not_null", "enum:hud_pit,income_data"]},
                 "data_quality_score": {"type": "str", "constraints": ["not_null"]},
                 "collection_date": {"type": "datetime", "constraints": ["not_null"]},
                 "last_updated": {"type": "datetime", "constraints": ["not_null"]}
@@ -330,12 +330,12 @@ class DataQualityFramework:
         # Base accuracy scores by source
         source_accuracy = {
             DataSource.CENSUS_DECENNIAL.value: 0.99,    # Most accurate
-            DataSource.CENSUS_ACS.value: 0.90,          # Good estimates
-            DataSource.HUD_PIT.value: 0.85,             # Point-in-time counts
+            DataSource.HUD_PIT.value: 0.95,             # Official homeless counts
             DataSource.BUILDING_PERMITS.value: 0.95,    # Administrative data
             DataSource.INCOME_DATA.value: 0.88,         # Survey estimates
             DataSource.LOCAL_SURVEYS.value: 0.80,       # Varies by quality
-            DataSource.SHELTER_DATA.value: 0.85         # Administrative data
+            DataSource.SHELTER_DATA.value: 0.85,        # Administrative data
+            DataSource.REAL_TIME_DATA.value: 0.90       # Current indicators
         }
         
         base_accuracy = source_accuracy.get(data_source, 0.70)
@@ -499,7 +499,7 @@ def main():
     
     # Example quality assessment
     print("\nExample Quality Assessment:")
-    print("Source: Census ACS")
+    print("Source: HUD PIT Data")
     print("Year: 2023")
     print("Collection Date: Now")
     
@@ -512,7 +512,7 @@ def main():
     
     quality_metrics = quality_framework.assess_dataset_quality(
         sample_df, 
-        DataSource.CENSUS_ACS.value, 
+        DataSource.HUD_PIT.value, 
         datetime.now(), 
         2023
     )

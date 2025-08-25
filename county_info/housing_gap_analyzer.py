@@ -134,7 +134,7 @@ class OregonHousingGapAnalyzer:
         self.logger.info("Loading data sources for analysis")
         
         # Load population data
-        population_file = os.path.join(self.output_dir, "oregon_county_population_2009_2023_census_acs.csv")
+        population_file = os.path.join(self.output_dir, "oregon_county_population_2009_2023_reliable.csv")
         if os.path.exists(population_file):
             population_data = pd.read_csv(population_file)
             self.logger.info(f"Loaded population data: {len(population_data)} records")
@@ -143,7 +143,7 @@ class OregonHousingGapAnalyzer:
             population_data = pd.DataFrame()
         
         # Load housing supply data
-        housing_supply_file = os.path.join(self.output_dir, "oregon_county_housing_supply_2009_2023_acs.csv")
+        housing_supply_file = os.path.join(self.output_dir, "oregon_county_housing_supply_2009_2023_reliable.csv")
         if os.path.exists(housing_supply_file):
             housing_supply_data = pd.read_csv(housing_supply_file)
             self.logger.info(f"Loaded housing supply data: {len(housing_supply_data)} records")
@@ -152,7 +152,7 @@ class OregonHousingGapAnalyzer:
             housing_supply_data = pd.DataFrame()
         
         # Load income data
-        income_file = os.path.join(self.output_dir, "oregon_county_income_2009_2023_acs.csv")
+        income_file = os.path.join(self.output_dir, "oregon_county_income_2009_2023_reliable.csv")
         if os.path.exists(income_file):
             income_data = pd.read_csv(income_file)
             self.logger.info(f"Loaded income data: {len(income_data)} records")
@@ -389,7 +389,7 @@ class OregonHousingGapAnalyzer:
         """Get county population estimate for a given year"""
         try:
             # Try to load population data
-            population_file = os.path.join(self.output_dir, "oregon_county_population_2009_2023_census_acs.csv")
+            population_file = os.path.join(self.output_dir, "oregon_county_population_2009_2023_reliable.csv")
             if os.path.exists(population_file):
                 population_data = pd.read_csv(population_file)
                 pop_row = population_data[
@@ -553,7 +553,7 @@ class OregonHousingGapAnalyzer:
             # Assess data quality
             quality_metrics = self.quality_framework.assess_dataset_quality(
                 pd.DataFrame([housing_data]),
-                DataSource.CENSUS_ACS.value,
+                DataSource.HUD_PIT.value,
                 datetime.now(),
                 year
             )

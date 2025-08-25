@@ -43,20 +43,20 @@ pip install -r requirements.txt
 3. Run the data collection programs:
 ```bash
 # Population data collection (Phase 1)
-python3 homeless/population_collector.py
+python3 county_info/population_collector.py
 
 # Housing supply data collection (Phase 2)
-python3 homeless/housing_supply_collector.py
+python3 county_info/housing_supply_collector.py
 
 # Income data collection (Phase 3)
-python3 homeless/income_collector.py
+python3 county_info/income_collector.py
 ```
 
 ## 📁 Project Structure
 
 ```
 oregon_housing/
-├── homeless/                                                   # Main project directory
+├── county_info/                                                # Main project directory
 │   ├── data_architecture.py                                    # Core data models and quality framework
 │   ├── housing_gap_analyzer.py                                 # Gap analysis engine (Phase 4)
 │   ├── housing_supply_collector.py                             # Housing supply data collection ✅

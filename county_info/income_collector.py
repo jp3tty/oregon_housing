@@ -393,9 +393,9 @@ class OregonIncomeDataCollector:
                         'county_fips': county_fips,
                         'year': year
                     }]),
-                    DataSource.CENSUS_ACS.value,
-                    collection_date,
-                    year
+                                    DataSource.CENSUS_DECENNIAL.value,
+                collection_date,
+                year
                 )
                 
                 # Create comprehensive income record
@@ -459,7 +459,7 @@ class OregonIncomeDataCollector:
                     "cost_burden_rate_percent": cost_burden_rate,
                     
                     # Metadata
-                    "data_source": DataSource.CENSUS_ACS.value,
+                    "data_source": DataSource.CENSUS_DECENNIAL.value,
                     "data_quality_score": quality_metrics.overall_score.value,
                     "collection_date": collection_date.strftime("%Y-%m-%d %H:%M:%S"),
                     "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -479,10 +479,10 @@ class OregonIncomeDataCollector:
         """
         all_data = []
         
-        # Collect ACS income data for 2009-2023
-        acs_years = list(range(2009, 2024))  # 2009-2023
+        # Collect reliable income data for 2009-2023
+        income_years = list(range(2009, 2024))  # 2009-2023
         
-        for year in acs_years:
+        for year in income_years:
             self.logger.info(f"Processing income year: {year}")
             
             # Get income data for this specific year
@@ -555,14 +555,14 @@ class OregonIncomeDataCollector:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         # Save timestamped version (preserved for history)
-        filename = f"oregon_county_income_2009_2023_acs_{timestamp}.csv"
+        filename = f"oregon_county_income_2009_2023_reliable_{timestamp}.csv"
         filepath = os.path.join(self.historic_dir, filename)
         
         df.to_csv(filepath, index=False)
         self.logger.info(f"Timestamped data saved to: {filepath}")
         
         # Save standard version (overwritten each time for easy access)
-        standard_filename = "oregon_county_income_2009_2023_acs.csv"
+        standard_filename = "oregon_county_income_2009_2023_reliable.csv"
         standard_filepath = os.path.join(self.output_dir, standard_filename)
         
         df.to_csv(standard_filepath, index=False)
@@ -626,7 +626,7 @@ class OregonIncomeDataCollector:
             # Assess overall data quality
             overall_quality = self.quality_framework.assess_dataset_quality(
                 df,
-                DataSource.CENSUS_ACS.value,
+                DataSource.CENSUS_DECENNIAL.value,
                 datetime.now(),
                 2023
             )

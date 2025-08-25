@@ -186,7 +186,7 @@ This document describes the professional-grade implementation of the Oregon Hous
 
 ```
 oregon_housing/
-├── homeless/
+├── county_info/
 │   ├── data_architecture.py          # Core data models and quality framework
 │   ├── population_collector.py       # Phase 1: Population data collection
 │   ├── housing_supply_collector.py   # Phase 2: Housing supply data collection

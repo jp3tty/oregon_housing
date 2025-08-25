@@ -155,13 +155,13 @@ class OregonHousingAdvancedAnalytics:
         try:
             # Load main data files
             self.population_data = pd.read_csv(
-                os.path.join(self.output_dir, "oregon_county_population_2009_2023_census_acs.csv")
+                os.path.join(self.output_dir, "oregon_county_population_2009_2023_reliable.csv")
             )
             self.housing_supply_data = pd.read_csv(
-                os.path.join(self.output_dir, "oregon_county_housing_supply_2009_2023_acs.csv")
+                os.path.join(self.output_dir, "oregon_county_housing_supply_2009_2023_reliable.csv")
             )
             self.income_data = pd.read_csv(
-                os.path.join(self.output_dir, "oregon_county_income_2009_2023_acs.csv")
+                os.path.join(self.output_dir, "oregon_county_income_2009_2023_reliable.csv")
             )
             self.homeless_data = pd.read_csv(
                 os.path.join(self.output_dir, "oregon_county_homeless_data.csv")

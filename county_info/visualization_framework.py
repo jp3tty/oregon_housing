@@ -113,13 +113,13 @@ class OregonHousingVisualizationFramework:
         try:
             # Load main data files
             self.population_data = pd.read_csv(
-                os.path.join(self.output_dir, "oregon_county_population_2009_2023_census_acs.csv")
+                os.path.join(self.output_dir, "oregon_county_population_2009_2023_reliable.csv")
             )
             self.housing_supply_data = pd.read_csv(
-                os.path.join(self.output_dir, "oregon_county_housing_supply_2009_2023_acs.csv")
+                os.path.join(self.output_dir, "oregon_county_housing_supply_2009_2023_reliable.csv")
             )
             self.income_data = pd.read_csv(
-                os.path.join(self.output_dir, "oregon_county_income_2009_2023_acs.csv")
+                os.path.join(self.output_dir, "oregon_county_income_2009_2023_reliable.csv")
             )
             self.homeless_data = pd.read_csv(
                 os.path.join(self.output_dir, "oregon_county_homeless_data.csv")
@@ -884,7 +884,8 @@ class OregonHousingVisualizationFramework:
                             'shelter_utilization_rate': row_data['shelter_utilization_rate'],
                             'emergency_shelter_beds': row_data['emergency_shelter_beds'],
                             'transitional_housing_beds': row_data['transitional_housing_beds'],
-                            'permanent_supportive_housing': row_data['permanent_supportive_housing']
+                            'permanent_supportive_housing': row_data['permanent_supportive_housing'],
+                            'data_source': row_data['data_source']
                         }
                     else:
                         # No data for this county/year - create record with null values
@@ -903,7 +904,8 @@ class OregonHousingVisualizationFramework:
                             'shelter_utilization_rate': None,
                             'emergency_shelter_beds': None,
                             'transitional_housing_beds': None,
-                            'permanent_supportive_housing': None
+                            'permanent_supportive_housing': None,
+                            'data_source': 'no_homeless_data_available'
                         }
                     
                     complete_records.append(record)
